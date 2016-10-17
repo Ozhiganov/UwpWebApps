@@ -43,7 +43,7 @@ namespace UwpWebApps
         private void NavigateTo(string url)
         {
             var message = new HttpRequestMessage(HttpMethod.Get, new Uri(url));
-            message.Headers.Add("User-Agent", userAgent);
+            //message.Headers.Add("User-Agent", userAgent);
 
             webView.NavigateWithHttpRequestMessage(message);
         }

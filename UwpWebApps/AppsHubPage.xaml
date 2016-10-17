@@ -18,8 +18,8 @@
 
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <Border Background="Red">
-                        <TextBlock Text="{Binding Path=Name}" Foreground="White" Padding="30" />
+                    <Border Background="Red" MinWidth="150">
+                        <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Center" Foreground="White" Padding="30" />
                     </Border>
                 </DataTemplate>
             </GridView.ItemTemplate>
