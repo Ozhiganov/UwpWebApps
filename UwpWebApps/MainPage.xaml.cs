@@ -25,7 +25,7 @@ namespace UwpWebApps
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private const string startPage = "https://youtube.com/"; //"https://play.google.com/music/listen#/now";
+        private string startPage;
         private const string userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36";
 
         public MainPage()
@@ -85,6 +85,13 @@ namespace UwpWebApps
         }
 
         #region Event Handlers
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            startPage = (string)e.Parameter;
+        }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
