@@ -7,5 +7,14 @@
         public string Name { get; set; }
 
         public string BaseUrl { get; set; }
+
+        public string AccentColor { get; set; }
+
+        public string IconName { get; set; }
+
+        public AppModel()
+        {
+            AccentColor = "Red";
+        }
     }
 }
