@@ -20,6 +20,8 @@ namespace UwpWebApps
             this.InitializeComponent();
         }
 
+        #region Event Handlers
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             var apps = new List<AppModel>
@@ -85,13 +87,24 @@ namespace UwpWebApps
                 $"WebApp-{selectedApp.Id}",
                 selectedApp.Name,
                 selectedApp.BaseUrl,
-                new Uri(selectedApp.IconName != null ? $"ms-appx:///AppIcons/{selectedApp.IconName}" : "ms-appx:///Assets/Square150x150Logo.scale-200.png"),
+                new Uri($"ms-appx:///AppIcons/{selectedApp.IconName}"),
                 TileSize.Default);
-            appTile.VisualElements.Square44x44Logo = appTile.VisualElements.Square150x150Logo;
             appTile.VisualElements.BackgroundColor = (Windows.UI.Color)XamlBindingHelper.ConvertValue(typeof(Windows.UI.Color), selectedApp.AccentColor);
             appTile.VisualElements.ShowNameOnSquare150x150Logo = true;
 
             await appTile.RequestCreateAsync();
         }
+
+        private void hamburgerButton_Click(object sender, RoutedEventArgs e)
+        {
+            mainSplitView.IsPaneOpen = !mainSplitView.IsPaneOpen;
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            mainSplitView.IsPaneOpen = false;
+        }
+
+        #endregion
     }
 }

@@ -8,25 +8,75 @@
     mc:Ignorable="d"
     Loaded="Page_Loaded">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="20">
-        <GridView Name="appsGrid" ItemClick="appsGrid_ItemClick" IsItemClickEnabled="True">
-            <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ItemsWrapGrid Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
+    <SplitView Name="mainSplitView" DisplayMode="CompactOverlay" IsPaneOpen="False" 
+               CompactPaneLength="50" OpenPaneLength="250">
+        <SplitView.Pane>
+            <StackPanel Background="WhiteSmoke">
+                <Button x:Name="hamburgerButton" FontFamily="Segoe MDL2 Assets" FontSize="18" Content="&#xE700;"
+                    Width="50" Height="50" Background="Transparent" Click="hamburgerButton_Click"/>
 
-            <GridView.ItemTemplate>
-                <DataTemplate>
-                    <Border MinWidth="212" Margin="7">
-                        <Border.Background>
-                            <SolidColorBrush Color="{Binding Path=AccentColor}" />
-                        </Border.Background>
-                        
-                        <TextBlock Text="{Binding Path=Name}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White" Padding="30" />
-                    </Border>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-        </GridView>
-    </Grid>
+                <ListBox SelectionMode="Single" Background="Transparent" SelectionChanged="ListBox_SelectionChanged">
+                    <ListBox.Resources>
+                        <Style x:Key="IconStyle" TargetType="TextBlock">
+                            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+                            <Setter Property="FontSize" Value="18" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="3,0,0,0" />
+                        </Style>
+
+                        <Style x:Key="ContentStyle" TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="16" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="20,0,0,0" />
+                        </Style>
+                    </ListBox.Resources>
+
+                    <ListBoxItem>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource IconStyle}" Text="&#xE71D;" />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="Apps" />
+                        </StackPanel>
+                    </ListBoxItem>
+
+                    <ListBoxItem>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource IconStyle}" Text="&#xE946;" />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="About" />
+                        </StackPanel>
+                    </ListBoxItem>
+
+                    <ListBoxItem>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource IconStyle}" Text="&#xEB51;" />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="Credits" />
+                        </StackPanel>
+                    </ListBoxItem>
+                </ListBox>
+            </StackPanel>
+        </SplitView.Pane>
+
+        <SplitView.Content>
+            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="20">
+                <GridView Name="appsGrid" ItemClick="appsGrid_ItemClick" IsItemClickEnabled="True">
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Border MinWidth="212" Margin="7">
+                                <Border.Background>
+                                    <SolidColorBrush Color="{Binding Path=AccentColor}" />
+                                </Border.Background>
+
+                                <TextBlock Text="{Binding Path=Name}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White" Padding="30" />
+                            </Border>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </Grid>
+        </SplitView.Content>
+    </SplitView>
 </Page>

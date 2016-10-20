@@ -111,6 +111,7 @@
     <None Include="UwpWebApps_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppIcons\default.png" />
     <Content Include="AppIcons\youtube.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />

@@ -104,7 +104,6 @@ namespace UwpWebApps
             webView.NavigationStarting += WebView_NavigationStarting;
             webView.ContentLoading += WebView_ContentLoading;
             webView.DOMContentLoaded += WebView_DOMContentLoaded;
-            webView.NavigationCompleted += WebView_NavigationCompleted;
 
             webView.FrameNavigationStarting += WebView_FrameNavigationStarting;
 
@@ -128,9 +127,13 @@ namespace UwpWebApps
             var kk = await InvokeScript("navigator.userAgent");
         }
 
-        private async void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+        private async void webView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
             var kk = await InvokeScript("navigator.userAgent");
+
+
+            ChangeTitle(sender.DocumentTitle);
+            progressRing.IsActive = false;
         }
 
         private async void WebView_FrameNavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
@@ -205,12 +208,6 @@ namespace UwpWebApps
         {
             webErrorTextBlock.Text = String.Empty;
             progressRing.IsActive = true;
-        }
-
-        private void webView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
-        {
-            ChangeTitle(sender.DocumentTitle);
-            progressRing.IsActive = false;       
         }
 
         private void webView_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)

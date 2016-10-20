@@ -15,6 +15,7 @@
         public AppModel()
         {
             AccentColor = "Red";
+            IconName = "default.png";
         }
     }
 }
