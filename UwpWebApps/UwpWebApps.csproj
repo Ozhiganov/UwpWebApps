@@ -98,6 +98,16 @@
     <Compile Include="AppsHubPage.xaml.cs">
       <DependentUpon>AppsHubPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AppsHubPageFrames\AboutFrame.xaml.cs">
+      <DependentUpon>AboutFrame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AppsHubPageFrames\AppsFrame.xaml.cs">
+      <DependentUpon>AppsFrame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AppsHubPageFrames\CreditsFrame.xaml.cs">
+      <DependentUpon>CreditsFrame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Constants.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -128,6 +138,18 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="AppsHubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AppsHubPageFrames\AboutFrame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AppsHubPageFrames\AppsFrame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AppsHubPageFrames\CreditsFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

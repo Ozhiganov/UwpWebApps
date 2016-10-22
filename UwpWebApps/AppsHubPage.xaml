@@ -8,14 +8,62 @@
     mc:Ignorable="d"
     Loaded="Page_Loaded">
 
-    <SplitView Name="mainSplitView" DisplayMode="CompactOverlay" IsPaneOpen="False" 
-               CompactPaneLength="50" OpenPaneLength="250">
+    <SplitView Name="mainSplitView" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="250">
         <SplitView.Pane>
             <StackPanel Background="WhiteSmoke">
-                <Button x:Name="hamburgerButton" FontFamily="Segoe MDL2 Assets" FontSize="18" Content="&#xE700;"
-                    Width="50" Height="50" Background="Transparent" Click="hamburgerButton_Click"/>
+                <Button x:Name="hamburgerButton" FontFamily="Segoe MDL2 Assets" FontSize="18" Content="&#xE700;" Tag="&#xE700;"
+                    Width="50" Height="50" Background="Transparent" Click="hamburgerButton_Click">
+                    <Button.Style>
+                        <Style TargetType="Button" x:Name="MenuItemButtonStyle">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="MinHeight" Value="{ThemeResource ListViewItemMinHeight}"/>
+                            <Setter Property="MinWidth" Value="{ThemeResource SplitViewCompactPaneThemeLength}" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Grid x:Name="RootGrid">
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="Common">
+                                                    <VisualState x:Name="Normal" />
+                                                    <VisualState x:Name="PointerOver">
+                                                        <Storyboard>
+                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Background">
+                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListLowBrush}" />
+                                                            </ObjectAnimationUsingKeyFrames>
+                                                        </Storyboard>
+                                                    </VisualState>
+                                                    <VisualState x:Name="Pressed">
+                                                        <Storyboard>
+                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Background">
+                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListMediumBrush}" />
+                                                            </ObjectAnimationUsingKeyFrames>
+                                                        </Storyboard>
+                                                    </VisualState>
+                                                    <VisualState x:Name="Disabled" />
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
 
-                <ListBox SelectionMode="Single" Background="Transparent" SelectionChanged="ListBox_SelectionChanged">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="44" />
+                                            </Grid.RowDefinitions>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="48" />
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- use extra left margin to align the icon with NavigationButtonStyle'd controls -->
+                                            <FontIcon Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="12,8,8,8" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="{TemplateBinding Tag}" />
+                                            <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="8,8,8,8" Text="{TemplateBinding Content}" />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <ListBox Name="menuItemsListBox" SelectionMode="Single" Background="Transparent" SelectionChanged="menuItemsListBox_SelectionChanged">
                     <ListBox.Resources>
                         <Style x:Key="IconStyle" TargetType="TextBlock">
                             <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
@@ -31,21 +79,21 @@
                         </Style>
                     </ListBox.Resources>
 
-                    <ListBoxItem>
+                    <ListBoxItem Tag="Apps">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource IconStyle}" Text="&#xE71D;" />
                             <TextBlock Style="{StaticResource ContentStyle}" Text="Apps" />
                         </StackPanel>
                     </ListBoxItem>
 
-                    <ListBoxItem>
+                    <ListBoxItem Tag="About">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource IconStyle}" Text="&#xE946;" />
                             <TextBlock Style="{StaticResource ContentStyle}" Text="About" />
                         </StackPanel>
                     </ListBoxItem>
 
-                    <ListBoxItem>
+                    <ListBoxItem Tag="Credits">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource IconStyle}" Text="&#xEB51;" />
                             <TextBlock Style="{StaticResource ContentStyle}" Text="Credits" />
@@ -56,26 +104,27 @@
         </SplitView.Pane>
 
         <SplitView.Content>
-            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="20">
-                <GridView Name="appsGrid" ItemClick="appsGrid_ItemClick" IsItemClickEnabled="True">
-                    <GridView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </GridView.ItemsPanel>
+            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
-                            <Border MinWidth="212" Margin="7">
-                                <Border.Background>
-                                    <SolidColorBrush Color="{Binding Path=AccentColor}" />
-                                </Border.Background>
+                <Border Grid.Row="0" Background="#F9F9F9">
+                    <TextBlock Margin="20,0,0,0" FontSize="18" FontWeight="Bold" Foreground="Black" VerticalAlignment="Center" Typography.Capitals="AllSmallCaps" Text="{Binding Path=SelectedItem.Tag, ElementName=menuItemsListBox}" />
+                </Border>
 
-                                <TextBlock Text="{Binding Path=Name}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White" Padding="30" />
-                            </Border>
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
-                </GridView>
+                <Frame Grid.Row="1" Name="contentFrame">
+                    <Frame.ContentTransitions>
+                        <TransitionCollection>
+                            <NavigationThemeTransition>
+                                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                                    <EntranceNavigationTransitionInfo/>
+                                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                            </NavigationThemeTransition>
+                        </TransitionCollection>
+                    </Frame.ContentTransitions>
+                </Frame>
             </Grid>
         </SplitView.Content>
     </SplitView>
