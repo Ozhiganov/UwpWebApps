@@ -13,6 +13,20 @@
 
             <ListView SelectionMode="None" Margin="15,0,0,0">
                 <TextBlock TextWrapping="Wrap">
+                    <Hyperlink NavigateUri="http://www.flaticon.com/free-icon/browser_140799">Web Apps</Hyperlink>: Icon made by
+                    <Hyperlink NavigateUri="http://www.flaticon.com/authors/madebyoliver">Madebyoliver</Hyperlink> from
+                    <Hyperlink NavigateUri="http://www.flaticon.com/">www.flaticon.com</Hyperlink> is licensed by
+                    <Hyperlink NavigateUri="http://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</Hyperlink>
+                </TextBlock>
+
+                <TextBlock TextWrapping="Wrap">
+                    <Hyperlink NavigateUri="http://www.flaticon.com/free-icon/app_149398">Default App Tile</Hyperlink>: Icon made by
+                    <Hyperlink NavigateUri="http://www.flaticon.com/authors/madebyoliver">Madebyoliver</Hyperlink> from
+                    <Hyperlink NavigateUri="http://www.flaticon.com/">www.flaticon.com</Hyperlink> is licensed by
+                    <Hyperlink NavigateUri="http://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</Hyperlink>
+                </TextBlock>
+
+                <TextBlock TextWrapping="Wrap">
                     <Hyperlink NavigateUri="http://www.flaticon.com/free-icon/youtube-logo_25178">Youtube</Hyperlink>: Icon made by
                     <Hyperlink NavigateUri="http://www.flaticon.com/authors/dave-gandy">Dave Gandy</Hyperlink> from
                     <Hyperlink NavigateUri="http://www.flaticon.com/">www.flaticon.com</Hyperlink> is licensed by

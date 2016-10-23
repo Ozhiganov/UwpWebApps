@@ -51,6 +51,7 @@ namespace UwpWebApps
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
+
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)                                      // First activation
             {
