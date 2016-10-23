@@ -32,6 +32,27 @@
                     <Hyperlink NavigateUri="http://www.flaticon.com/">www.flaticon.com</Hyperlink> is licensed by
                     <Hyperlink NavigateUri="http://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</Hyperlink>
                 </TextBlock>
+
+                <TextBlock TextWrapping="Wrap">
+                    <Hyperlink NavigateUri="http://www.flaticon.com/free-icon/photo-camera_133967">Google Photos</Hyperlink>: Icon made by
+                    <Hyperlink NavigateUri="http://www.flaticon.com/authors/epiccoders">EpicCoders</Hyperlink> from
+                    <Hyperlink NavigateUri="http://www.flaticon.com/">www.flaticon.com</Hyperlink> is licensed by
+                    <Hyperlink NavigateUri="http://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</Hyperlink>
+                </TextBlock>
+
+                <TextBlock TextWrapping="Wrap">
+                    <Hyperlink NavigateUri="http://www.flaticon.com/free-icon/books-stack_46881">Google Play Books</Hyperlink>: Icon made by
+                    <Hyperlink NavigateUri="http://www.freepik.com">Freepik</Hyperlink> from
+                    <Hyperlink NavigateUri="http://www.flaticon.com/">www.flaticon.com</Hyperlink> is licensed by
+                    <Hyperlink NavigateUri="http://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</Hyperlink>
+                </TextBlock>
+
+                <TextBlock TextWrapping="Wrap">
+                    <Hyperlink NavigateUri="http://www.flaticon.com/free-icon/lion_130649">Lingualeo</Hyperlink>: Icon made by
+                    <Hyperlink NavigateUri="http://www.flaticon.com/authors/tae-s-yang">Tae S Yang</Hyperlink> from
+                    <Hyperlink NavigateUri="http://www.flaticon.com/">www.flaticon.com</Hyperlink> is licensed by
+                    <Hyperlink NavigateUri="http://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</Hyperlink>
+                </TextBlock>
             </ListView>
         </StackPanel>
     </Grid>

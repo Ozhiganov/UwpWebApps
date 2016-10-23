@@ -61,7 +61,8 @@ namespace UwpWebApps.AppsHubPageFrames
                     Id = "DDD64EEA-ED01-4C83-9A3A-AC986EA07EBB",
                     Name = "Google Photos",
                     BaseUrl = "https://photos.google.com/",
-                    AccentColor = "#FFA013"
+                    AccentColor = "#FFA013",
+                    IconName = "google-photos.png"
                 },
 
                 new AppModel()
@@ -69,7 +70,8 @@ namespace UwpWebApps.AppsHubPageFrames
                     Id = "DC743BD9-916B-460C-8093-781FA0F97206",
                     Name = "Google Play Books",
                     BaseUrl = "https://books.google.com/ebooks/app",
-                    AccentColor = "#3FDBFE"
+                    AccentColor = "#3FDBFE",
+                    IconName = "google-play-books.png"
                 },
 
                 new AppModel()
@@ -77,7 +79,8 @@ namespace UwpWebApps.AppsHubPageFrames
                     Id = "697B0E31-E65E-476F-A746-E676C12B23A6",
                     Name = "Lingualeo",
                     BaseUrl = "https://lingualeo.com",
-                    AccentColor = "#48B484"
+                    AccentColor = "#48B484",
+                    IconName = "lingualeo.png"
                 },
             };
 

@@ -124,7 +124,10 @@
   <ItemGroup>
     <Content Include="AppIcons\default.png" />
     <Content Include="AppIcons\google-maps.png" />
+    <Content Include="AppIcons\google-photos.png" />
+    <Content Include="AppIcons\google-play-books.png" />
     <Content Include="AppIcons\google-translate.png" />
+    <Content Include="AppIcons\lingualeo.png" />
     <Content Include="AppIcons\youtube.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
