@@ -8,6 +8,31 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel>
+            <TextBlock Text="Icons" Margin="25,10,0,0" FontSize="20" />
 
+            <ListView SelectionMode="None" Margin="15,0,0,0">
+                <TextBlock TextWrapping="Wrap">
+                    <Hyperlink NavigateUri="http://www.flaticon.com/free-icon/youtube-logo_25178">Youtube</Hyperlink>: Icon made by
+                    <Hyperlink NavigateUri="http://www.flaticon.com/authors/dave-gandy">Dave Gandy</Hyperlink> from
+                    <Hyperlink NavigateUri="http://www.flaticon.com/">www.flaticon.com</Hyperlink> is licensed by
+                    <Hyperlink NavigateUri="http://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</Hyperlink>
+                </TextBlock>
+
+                <TextBlock TextWrapping="Wrap">
+                    <Hyperlink NavigateUri="http://www.flaticon.com/free-icon/google-translate_104081">Google Translate</Hyperlink>: Icon made by
+                    <Hyperlink NavigateUri="http://www.freepik.com">Freepik</Hyperlink> from
+                    <Hyperlink NavigateUri="http://www.flaticon.com/">www.flaticon.com</Hyperlink> is licensed by
+                    <Hyperlink NavigateUri="http://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</Hyperlink>
+                </TextBlock>
+
+                <TextBlock TextWrapping="Wrap">
+                    <Hyperlink NavigateUri="http://www.flaticon.com/free-icon/google-maps_104062">Google Maps</Hyperlink>: Icon made by
+                    <Hyperlink NavigateUri="http://www.freepik.com">Freepik</Hyperlink> from
+                    <Hyperlink NavigateUri="http://www.flaticon.com/">www.flaticon.com</Hyperlink> is licensed by
+                    <Hyperlink NavigateUri="http://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</Hyperlink>
+                </TextBlock>
+            </ListView>
+        </StackPanel>
     </Grid>
 </Page>

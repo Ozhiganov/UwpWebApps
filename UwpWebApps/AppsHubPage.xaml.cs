@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using UwpWebApps.Models;
 using Windows.UI.StartScreen;
@@ -15,15 +16,43 @@ namespace UwpWebApps
     /// </summary>
     public sealed partial class AppsHubPage : Page
     {
+        #region Fields
+
+        private List<MenuItemModel> _menuItems = new List<MenuItemModel>
+        {
+            new MenuItemModel { Id = "apps", FontIcon = "\xE71D", Title = "Apps" },
+            new MenuItemModel { Id = "about", FontIcon = "\xE946", Title = "About" },
+            new MenuItemModel { Id = "credits", FontIcon = "\xEB51", Title = "Credits" }
+        };
+
+        #endregion
+
+        #region Properties
+
+        public List<MenuItemModel> MenuItems
+        {
+            get
+            {
+                return _menuItems;
+            }
+        }
+
+        #endregion
+
+        #region Constructors
+
         public AppsHubPage()
         {
             this.InitializeComponent();
         }
 
+        #endregion
+
         #region Event Handlers
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            menuItemsListBox.ItemsSource = MenuItems;
             menuItemsListBox.SelectedIndex = 0;
         }
 
@@ -36,11 +65,10 @@ namespace UwpWebApps
         {
             mainSplitView.IsPaneOpen = false;
 
-            var selectedlistBoxItem = menuItemsListBox.SelectedItem as ListBoxItem;
-            var selectedFrame = selectedlistBoxItem.Tag as string;
+            var selectedlistBoxItem = menuItemsListBox.SelectedItem as MenuItemModel;
 
             Type navigationType = null;
-            switch (selectedFrame.ToLower())
+            switch (selectedlistBoxItem.Id)
             {
                 case Constants.AppsHubFrames.Apps:
                     navigationType = typeof(AppsHubPageFrames.AppsFrame);

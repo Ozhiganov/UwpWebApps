@@ -25,14 +25,9 @@ namespace UwpWebApps.AppsHubPageFrames
     /// </summary>
     public sealed partial class AppsFrame : Page
     {
-        public AppsFrame()
-        {
-            this.InitializeComponent();
-        }
+        #region Fields
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            var apps = new List<AppModel>
+        List<AppModel> _apps = new List<AppModel>
             {
                 new AppModel()
                 {
@@ -40,7 +35,7 @@ namespace UwpWebApps.AppsHubPageFrames
                     Name = "YouTube",
                     BaseUrl = "https://youtube.com/",
                     AccentColor = "#CC181E",
-                    IconName = "Youtube.png"
+                    IconName = "youtube.png"
                 },
 
                 new AppModel()
@@ -48,7 +43,8 @@ namespace UwpWebApps.AppsHubPageFrames
                     Id = "4B298274-0F6F-4558-8AB5-58160736EF62",
                     Name = "Google Maps",
                     BaseUrl = "https://www.google.com.ua/maps",
-                    AccentColor = "#1CA261"
+                    AccentColor = "#1CA261",
+                    IconName = "google-maps.png"
                 },
 
                 new AppModel()
@@ -56,7 +52,8 @@ namespace UwpWebApps.AppsHubPageFrames
                     Id = "660FD349-BF1A-4F2B-8909-C4C872AA72B7",
                     Name = "Google Translate",
                     BaseUrl = "https://translate.google.com/",
-                    AccentColor = "#4889F0"
+                    AccentColor = "#4889F0",
+                    IconName = "google-translate.png"
                 },
 
                 new AppModel()
@@ -84,7 +81,22 @@ namespace UwpWebApps.AppsHubPageFrames
                 },
             };
 
-            appsGrid.ItemsSource = apps;
+        #endregion
+
+        #region Constructors
+
+        public AppsFrame()
+        {
+            this.InitializeComponent();
+        }
+
+        #endregion
+
+        #region Event Handlers
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            appsGrid.ItemsSource = _apps;
         }
 
         private async void appsGrid_ItemClick(object sender, ItemClickEventArgs e)
@@ -102,5 +114,7 @@ namespace UwpWebApps.AppsHubPageFrames
 
             await appTile.RequestCreateAsync();
         }
+
+        #endregion
     }
 }

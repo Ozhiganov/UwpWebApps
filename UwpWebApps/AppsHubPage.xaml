@@ -79,26 +79,14 @@
                         </Style>
                     </ListBox.Resources>
 
-                    <ListBoxItem Tag="Apps">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Style="{StaticResource IconStyle}" Text="&#xE71D;" />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="Apps" />
-                        </StackPanel>
-                    </ListBoxItem>
-
-                    <ListBoxItem Tag="About">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Style="{StaticResource IconStyle}" Text="&#xE946;" />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="About" />
-                        </StackPanel>
-                    </ListBoxItem>
-
-                    <ListBoxItem Tag="Credits">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Style="{StaticResource IconStyle}" Text="&#xEB51;" />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="Credits" />
-                        </StackPanel>
-                    </ListBoxItem>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource IconStyle}" Text="{Binding Path=FontIcon}" />
+                                <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding Title}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
                 </ListBox>
             </StackPanel>
         </SplitView.Pane>
@@ -111,7 +99,7 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" Background="#F9F9F9">
-                    <TextBlock Margin="20,0,0,0" FontSize="18" FontWeight="Bold" Foreground="Black" VerticalAlignment="Center" Typography.Capitals="AllSmallCaps" Text="{Binding Path=SelectedItem.Tag, ElementName=menuItemsListBox}" />
+                    <TextBlock Margin="20,0,0,0" FontSize="18" FontWeight="Bold" Foreground="Black" VerticalAlignment="Center" Typography.Capitals="AllSmallCaps" Text="{Binding Path=SelectedItem.Title, ElementName=menuItemsListBox}" />
                 </Border>
 
                 <Frame Grid.Row="1" Name="contentFrame">
