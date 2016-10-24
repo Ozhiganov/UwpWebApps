@@ -12,6 +12,8 @@
 
         public string IconName { get; set; }
 
+        public string DOMContentLoadedScript { get; set; }
+
         public AppModel()
         {
             AccentColor = "Red";

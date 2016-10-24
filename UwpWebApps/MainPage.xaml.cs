@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using UwpWebApps.Models;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.ViewManagement;
@@ -25,7 +26,7 @@ namespace UwpWebApps
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private string startPage;
+        private AppModel _app;
         private const string userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36";
 
         public MainPage()
@@ -75,6 +76,19 @@ namespace UwpWebApps
             await InvokeScript(body);
         }
 
+        private void EnterExitFullscreenMode()
+        {
+            var currentView = ApplicationView.GetForCurrentView();
+
+            if (!currentView.IsFullScreenMode)
+            {
+                currentView.TryEnterFullScreenMode();
+            }
+            else
+            {
+                currentView.ExitFullScreenMode();
+            }
+        }
 
         private void GoBack()
         {
@@ -90,7 +104,7 @@ namespace UwpWebApps
         {
             base.OnNavigatedTo(e);
 
-            startPage = (string)e.Parameter;
+            _app = ConfigurationManager.Current.GetApp((string)e.Parameter);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -101,31 +115,23 @@ namespace UwpWebApps
             var navManager = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
             navManager.BackRequested += NavManager_BackRequested;
 
-            webView.NavigationStarting += WebView_NavigationStarting;
             webView.ContentLoading += WebView_ContentLoading;
-            webView.DOMContentLoaded += WebView_DOMContentLoaded;
-
             webView.FrameNavigationStarting += WebView_FrameNavigationStarting;
 
 
-            NavigateTo(startPage);
+            NavigateTo(_app.BaseUrl);
         }
 
-        private async void WebView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        private void Page_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            //await ChangeUserAgent(userAgent);
+            switch (e.Key)
+            {
+                case Windows.System.VirtualKey.F11:
+                    EnterExitFullscreenMode();
+                    break;
+            }
         }
 
-        private async void WebView_ContentLoading(WebView sender, WebViewContentLoadingEventArgs args)
-        {
-            //await ChangeUserAgent(userAgent);
-            //var kk = await InvokeScript("document.head.innerHTML");
-        }
-
-        private async void WebView_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
-        {
-            var kk = await InvokeScript("navigator.userAgent");
-        }
 
         private async void webView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
@@ -133,6 +139,7 @@ namespace UwpWebApps
 
 
             ChangeTitle(sender.DocumentTitle);
+            contentOverlay.Visibility = Visibility.Collapsed;
             progressRing.IsActive = false;
         }
 
@@ -151,21 +158,12 @@ namespace UwpWebApps
 
         private void fullscrenAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            var currentView = ApplicationView.GetForCurrentView();
-
-            if (!currentView.IsFullScreenMode)
-            {
-                currentView.TryEnterFullScreenMode();
-            }
-            else
-            {
-                currentView.ExitFullScreenMode();
-            }
+            EnterExitFullscreenMode();
         }
 
         private void homeAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigateTo(startPage);
+            NavigateTo(_app.BaseUrl);
         }
 
         private void refreshAppBarButton_Click(object sender, RoutedEventArgs e)
@@ -206,8 +204,25 @@ namespace UwpWebApps
 
         private void webView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
         {
-            webErrorTextBlock.Text = String.Empty;
+            webErrorTextBlock.Text = string.Empty;
+            contentOverlay.Visibility = Visibility.Visible;
             progressRing.IsActive = true;
+        }
+
+        private async void WebView_ContentLoading(WebView sender, WebViewContentLoadingEventArgs args)
+        {
+            //await ChangeUserAgent(userAgent);
+            //var kk = await InvokeScript("document.head.innerHTML");
+        }
+
+        private async void webView_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
+        {
+            var script = _app.DOMContentLoadedScript;
+            if (!string.IsNullOrWhiteSpace(script))
+            {
+                try { await InvokeScript(script); }
+                catch (Exception) { }
+            }
         }
 
         private void webView_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)

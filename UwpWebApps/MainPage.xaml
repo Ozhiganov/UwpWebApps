@@ -5,7 +5,7 @@
     xmlns:local="using:UwpWebApps"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Loaded="Page_Loaded">
+    mc:Ignorable="d" Loaded="Page_Loaded" KeyDown="Page_KeyDown">
     
     <Page.BottomAppBar>
         <AppBar ClosedDisplayMode="Hidden">
@@ -22,6 +22,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <WebView Name="webView"
                  NavigationStarting="webView_NavigationStarting"
+                 DOMContentLoaded="webView_DOMContentLoaded"
                  NavigationCompleted="webView_NavigationCompleted"
                  NavigationFailed="webView_NavigationFailed"
                  PermissionRequested="webView_PermissionRequested"
@@ -29,6 +30,8 @@
                  ContainsFullScreenElementChanged="webView_ContainsFullScreenElementChanged">
             
         </WebView>
+
+        <Border Name="contentOverlay" Background="White" />
 
         <ProgressRing Name="progressRing" />
         <TextBlock Name="webErrorTextBlock" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
