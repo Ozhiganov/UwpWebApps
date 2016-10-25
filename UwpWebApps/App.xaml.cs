@@ -123,7 +123,13 @@ namespace UwpWebApps
 
         private void NavigateTo(string tileId, string args, Frame frame)
         {
-            if (tileId.StartsWith("WebApp"))
+            var testApp = false;
+
+            if (testApp)
+            {
+                frame.Navigate(typeof(MainPage), "660FD349-BF1A-4F2B-8909-C4C872AA72B7");
+            }
+            else if (tileId.StartsWith("WebApp"))
             {
                 frame.Navigate(typeof(MainPage), args);
             }

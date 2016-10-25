@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using UwpWebApps.Models;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -26,14 +28,24 @@ namespace UwpWebApps
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        #region Fields
+
         private AppModel _app;
-        private const string userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36";
+
+        #endregion
+
+        #region Constructors
 
         public MainPage()
         {
             this.InitializeComponent();
         }
 
+        #endregion
+
+        #region Methods
+
+        #region Auxiliary
 
         private void ChangeTitle(string title)
         {
@@ -41,17 +53,33 @@ namespace UwpWebApps
             currentView.Title = title;
         }
 
-        private void NavigateTo(string url)
+        private void NavigateToPage(string url)
         {
             var message = new HttpRequestMessage(HttpMethod.Get, new Uri(url));
-            //message.Headers.Add("User-Agent", userAgent);
-
             webView.NavigateWithHttpRequestMessage(message);
         }
 
         private async Task<string> InvokeScript(string body)
         {
-            return await webView.InvokeScriptAsync("eval", new string[] { body });
+            var scriptTemplate =
+@"
+(function() {
+    // common functions
+    function removeElementById(id) {
+        var elem = document.getElementById(id);
+        elem.parentNode.removeChild(elem);
+    }
+
+    function hideElementById(id) {
+        var elem = document.getElementById(id);
+        elem.style.visibility = 'hidden';
+    }
+
+    #body
+})();
+";
+
+            return await webView.InvokeScriptAsync("eval", new string[] { scriptTemplate.Replace("#body", body) });
         }
 
         private async Task ChangeUserAgent(string userAgent)
@@ -98,6 +126,13 @@ namespace UwpWebApps
             }
         }
 
+        private void RefreshPage()
+        {
+            webView.Refresh();
+        }
+
+        #endregion
+
         #region Event Handlers
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -115,43 +150,31 @@ namespace UwpWebApps
             var navManager = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
             navManager.BackRequested += NavManager_BackRequested;
 
-            webView.ContentLoading += WebView_ContentLoading;
-            webView.FrameNavigationStarting += WebView_FrameNavigationStarting;
+            Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated += AcceleratorKeyActivated;
 
-
-            NavigateTo(_app.BaseUrl);
+            NavigateToPage(_app.BaseUrl);
         }
 
-        private void Page_KeyDown(object sender, KeyRoutedEventArgs e)
+        private void AcceleratorKeyActivated(CoreDispatcher sender, AcceleratorKeyEventArgs args)
         {
-            switch (e.Key)
+            if (args.EventType == CoreAcceleratorKeyEventType.KeyDown)
             {
-                case Windows.System.VirtualKey.F11:
-                    EnterExitFullscreenMode();
-                    break;
+                switch (args.VirtualKey)
+                {
+                    case VirtualKey.F5:
+                        args.Handled = true;
+                        RefreshPage();
+                        break;
+
+                    case VirtualKey.F11:
+                        args.Handled = true;
+                        EnterExitFullscreenMode();
+                        break;
+                }
             }
         }
 
-
-        private async void webView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
-        {
-            var kk = await InvokeScript("navigator.userAgent");
-
-
-            ChangeTitle(sender.DocumentTitle);
-            contentOverlay.Visibility = Visibility.Collapsed;
-            progressRing.IsActive = false;
-        }
-
-        private async void WebView_FrameNavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
-        {
-            //args.Cancel = true;
-        }
-
-
-
-
-        private void NavManager_BackRequested(object sender, Windows.UI.Core.BackRequestedEventArgs e)
+        private void NavManager_BackRequested(object sender, BackRequestedEventArgs e)
         {
             GoBack();
         }
@@ -163,12 +186,12 @@ namespace UwpWebApps
 
         private void homeAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigateTo(_app.BaseUrl);
+            NavigateToPage(_app.BaseUrl);
         }
 
         private void refreshAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            webView.Refresh();
+            RefreshPage();
         }
 
         private void backAppBarButton_Click(object sender, RoutedEventArgs e)
@@ -209,7 +232,7 @@ namespace UwpWebApps
             progressRing.IsActive = true;
         }
 
-        private async void WebView_ContentLoading(WebView sender, WebViewContentLoadingEventArgs args)
+        private void webView_ContentLoading(WebView sender, WebViewContentLoadingEventArgs args)
         {
             //await ChangeUserAgent(userAgent);
             //var kk = await InvokeScript("document.head.innerHTML");
@@ -223,6 +246,13 @@ namespace UwpWebApps
                 try { await InvokeScript(script); }
                 catch (Exception) { }
             }
+        }
+
+        private void webView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+        {
+            ChangeTitle(sender.DocumentTitle);
+            contentOverlay.Visibility = Visibility.Collapsed;
+            progressRing.IsActive = false;
         }
 
         private void webView_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
@@ -255,6 +285,8 @@ namespace UwpWebApps
                 currentView.ExitFullScreenMode();
             }
         }
+
+        #endregion
 
         #endregion
     }

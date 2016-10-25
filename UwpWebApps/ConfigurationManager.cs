@@ -43,15 +43,9 @@ namespace UwpWebApps
                     IconName = "google-translate.png",
                     DOMContentLoadedScript =
 @"
-function removeElement(el) {
-    el.parentNode.removeChild(el);
-}
-
-var googleAppsButton = document.getElementById('gbwa');
-googleAppsButton.style.visibility = 'hidden';
-        
-removeElement(document.getElementById('gt-ft-res'));
-removeElement(document.getElementById('gt-ft'));
+    hideElementById('gbwa');
+    removeElementById('gt-ft-res');
+    removeElementById('gt-ft');
 "
                 },
 
@@ -64,12 +58,7 @@ removeElement(document.getElementById('gt-ft'));
                     IconName = "google-photos.png",
                     DOMContentLoadedScript =
 @"
-function removeElement(el) {
-    el.parentNode.removeChild(el);
-}
-
-var googleAppsButton = document.getElementById('gbwa');
-googleAppsButton.style.visibility = 'hidden';
+    hideElementById('gbwa');
 "
                 },
 

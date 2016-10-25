@@ -7,6 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Loaded="Page_Loaded">
 
+    <Page.TopAppBar>
+        <CommandBar Background="Transparent" Margin="150,0,0,0" DefaultLabelPosition="Right">
+            <AppBarButton Icon="Add" Label="Add App" />
+        </CommandBar>
+    </Page.TopAppBar>
+
     <GridView Grid.Row="1" Margin="20" Name="appsGrid" ItemClick="appsGrid_ItemClick" IsItemClickEnabled="True">
         <GridView.ItemsPanel>
             <ItemsPanelTemplate>

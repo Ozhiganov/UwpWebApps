@@ -5,14 +5,14 @@
     xmlns:local="using:UwpWebApps"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Loaded="Page_Loaded" KeyDown="Page_KeyDown">
+    mc:Ignorable="d" Loaded="Page_Loaded">
     
     <Page.BottomAppBar>
         <AppBar ClosedDisplayMode="Hidden">
             <StackPanel Orientation="Horizontal">
-                <AppBarButton Icon="FullScreen" Label="Fullscreen" Click="fullscrenAppBarButton_Click" />
+                <AppBarButton Icon="FullScreen" Label="Fullscreen (F11)" Click="fullscrenAppBarButton_Click" />
                 <AppBarButton Icon="Home" Label="Home" Click="homeAppBarButton_Click" />
-                <AppBarButton Icon="Refresh" Label="Refresh" Click="refreshAppBarButton_Click" />
+                <AppBarButton Icon="Refresh" Label="Refresh (F5)" Click="refreshAppBarButton_Click" />
                 <AppBarButton Name="backButton" Icon="Back" Label="Go Back" IsEnabled="False" Click="backAppBarButton_Click" />
                 <AppBarButton Name="forwardButton" Icon="Forward" Label="Go Forward" IsEnabled="False" Click="forwardAppBarButton_Click" />
             </StackPanel>
@@ -22,13 +22,13 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <WebView Name="webView"
                  NavigationStarting="webView_NavigationStarting"
+                 ContentLoading="webView_ContentLoading"
                  DOMContentLoaded="webView_DOMContentLoaded"
                  NavigationCompleted="webView_NavigationCompleted"
                  NavigationFailed="webView_NavigationFailed"
                  PermissionRequested="webView_PermissionRequested"
                  NewWindowRequested="webView_NewWindowRequested"
                  ContainsFullScreenElementChanged="webView_ContainsFullScreenElementChanged">
-            
         </WebView>
 
         <Border Name="contentOverlay" Background="White" />
