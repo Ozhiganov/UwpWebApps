@@ -9,11 +9,11 @@
 
     <Page.TopAppBar>
         <CommandBar Background="Transparent" Margin="150,0,0,0" DefaultLabelPosition="Right">
-            <AppBarButton Icon="Add" Label="Add App" />
+            <AppBarButton Icon="Add" Label="Add App" Click="addAppButton_Click" />
         </CommandBar>
     </Page.TopAppBar>
 
-    <GridView Grid.Row="1" Margin="20" Name="appsGrid" ItemClick="appsGrid_ItemClick" IsItemClickEnabled="True">
+    <GridView Grid.Row="1" Margin="20" Name="appsGrid" ItemClick="appsGridView_ItemClick" IsItemClickEnabled="True">
         <GridView.ItemsPanel>
             <ItemsPanelTemplate>
                 <ItemsWrapGrid Orientation="Horizontal"/>
@@ -22,7 +22,16 @@
 
         <GridView.ItemTemplate>
             <DataTemplate>
-                <Border MinWidth="212" Margin="7">
+                <Border MinWidth="212" Margin="7" RightTapped="appsGridViewItem_RightTapped">
+                    <FlyoutBase.AttachedFlyout>
+                        <MenuFlyout>
+                            <MenuFlyout.Items>
+                                <MenuFlyoutItem Text="Edit" Click="editAppMenuFlyoutItem_Click" />
+                                <MenuFlyoutItem Text="Remove" Click="removeAppMenuFlyoutItem_Click" />
+                            </MenuFlyout.Items>
+                        </MenuFlyout>
+                    </FlyoutBase.AttachedFlyout>
+                    
                     <Border.Background>
                         <SolidColorBrush Color="{Binding Path=AccentColor}" />
                     </Border.Background>

@@ -41,7 +41,12 @@ namespace UwpWebApps.AppsHubPageFrames
             appsGrid.ItemsSource = ConfigurationManager.Current.GetApps();
         }
 
-        private async void appsGrid_ItemClick(object sender, ItemClickEventArgs e)
+        private void addAppButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void appsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var selectedApp = e.ClickedItem as AppModel;
 
@@ -55,6 +60,23 @@ namespace UwpWebApps.AppsHubPageFrames
             appTile.VisualElements.ShowNameOnSquare150x150Logo = true;
 
             await appTile.RequestCreateAsync();
+        }
+
+        private void appsGridViewItem_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            var senderElement = sender as FrameworkElement;
+            var menu = FlyoutBase.GetAttachedFlyout(senderElement) as MenuFlyout;
+            menu.ShowAt(senderElement, e.GetPosition(senderElement));
+        }
+
+        private void editAppMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            var appModel = ((FrameworkElement)sender).DataContext as AppModel;
+        }
+
+        private void removeAppMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            var appModel = ((FrameworkElement)sender).DataContext as AppModel;
         }
 
         #endregion
