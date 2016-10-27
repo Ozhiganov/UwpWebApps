@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UwpWebApps.Models;
 
 
@@ -14,7 +13,7 @@ namespace UwpWebApps
 
         private static ConfigurationManager _instance;
 
-        List<AppModel> _apps = new List<AppModel>
+        ObservableCollection<AppModel> _apps = new ObservableCollection<AppModel>
             {
                 new AppModel()
                 {
@@ -117,14 +116,25 @@ namespace UwpWebApps
 
         public AppModel GetApp(string id)
         {
-            var apps = GetApps();
-            var targetApp = apps.FirstOrDefault(x => x.Id == id);
+            var targetApp = _apps.FirstOrDefault(x => x.Id == id);
             if (targetApp == null)
             {
                 throw new InvalidOperationException($"The App with id {id} does not exist.");
             }
 
             return targetApp;
+        }
+
+        public void RemoveApp(string id)
+        {
+            var targetApp = _apps.SingleOrDefault(x => x.Id == id);
+
+            if (targetApp == null)
+            {
+                throw new InvalidOperationException($"The app with id {id} does not exist.");
+            }
+
+            _apps.Remove(targetApp);
         }
 
         #endregion

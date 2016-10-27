@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using UwpWebApps.Models;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -74,9 +75,23 @@ namespace UwpWebApps.AppsHubPageFrames
             var appModel = ((FrameworkElement)sender).DataContext as AppModel;
         }
 
-        private void removeAppMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        private async void removeAppMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
             var appModel = ((FrameworkElement)sender).DataContext as AppModel;
+
+            var dialog = new MessageDialog($"Are you sure you want to remove {appModel.Name} app?");
+            dialog.Commands.Add(new UICommand("Yes", (c) => { RemoveAppCommandHandler(appModel.Id); }, 0));
+            dialog.Commands.Add(new UICommand("No") { Id = 1 });
+            
+            dialog.DefaultCommandIndex = 0;
+            dialog.CancelCommandIndex = 1;
+
+            await dialog.ShowAsync();
+        }
+
+        private void RemoveAppCommandHandler(string appId)
+        {
+            ConfigurationManager.Current.RemoveApp(appId);
         }
 
         #endregion
