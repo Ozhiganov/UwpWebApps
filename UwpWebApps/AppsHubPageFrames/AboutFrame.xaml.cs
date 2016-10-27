@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using Microsoft.Services.Store.Engagement;
+using System;
+using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace UwpWebApps.AppsHubPageFrames
 {
@@ -22,9 +11,57 @@ namespace UwpWebApps.AppsHubPageFrames
     /// </summary>
     public sealed partial class AboutFrame : Page
     {
+        #region Properties
+
+        public string AppName
+        {
+            get
+            {
+                return Package.Current.DisplayName;
+            }
+        }
+
+        public string AppPublisher
+        {
+            get
+            {
+                return Package.Current.PublisherDisplayName;
+            }
+        }
+
+        public string AppVersion
+        {
+            get
+            {
+                var v = Package.Current.Id.Version;
+                return $"{v.Major}.{v.Minor}.{v.Build}";
+            }
+        }
+
+        #endregion
+
+        #region Constructors
+
         public AboutFrame()
         {
             this.InitializeComponent();
+
+            if (StoreServicesFeedbackLauncher.IsSupported())
+            {
+                this.feedbackButton.Visibility = Visibility.Visible;
+            }
         }
+
+        #endregion
+
+        #region Methods
+
+        private async void feedbackAppButton_Click(object sender, RoutedEventArgs e)
+        {
+            var launcher = StoreServicesFeedbackLauncher.GetDefault();
+            await launcher.LaunchAsync();
+        }
+
+        #endregion
     }
 }
