@@ -52,7 +52,7 @@ namespace UwpWebApps.AppsHubPageFrames
             var selectedApp = e.ClickedItem as AppModel;
 
             var appTile = new SecondaryTile(
-                $"WebApp-{selectedApp.Id}",
+                selectedApp.TileId,
                 selectedApp.Name,
                 selectedApp.Id,
                 new Uri($"ms-appx:///AppIcons/{selectedApp.IconName}"),

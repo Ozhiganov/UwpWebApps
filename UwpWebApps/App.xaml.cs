@@ -1,21 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace UwpWebApps
@@ -129,7 +121,7 @@ namespace UwpWebApps
             {
                 frame.Navigate(typeof(MainPage), "660FD349-BF1A-4F2B-8909-C4C872AA72B7");
             }
-            else if (tileId.StartsWith("WebApp"))
+            else if (Models.AppModel.IsAppTileId(tileId))
             {
                 frame.Navigate(typeof(MainPage), args);
             }
