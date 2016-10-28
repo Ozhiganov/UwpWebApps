@@ -7,7 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.TopAppBar>
+        <CommandBar Background="Transparent" DefaultLabelPosition="Right" Margin="150,0,0,0">
+            <AppBarButton Label="Save" Icon="Save" />
+            <AppBarButton Label="Cancel" Icon="Cancel" />
+        </CommandBar>
+    </Page.TopAppBar>
+
+    <Grid Margin="0,-50,0,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="20">
 
@@ -25,11 +32,4 @@
             </StackPanel>
         </ScrollViewer>
     </Grid>
-
-    <Page.BottomAppBar>
-        <CommandBar DefaultLabelPosition="Right" Background="#F9F9F9">
-            <AppBarButton Label="Save" Icon="Save" />
-            <AppBarButton Label="Cancel" Icon="Cancel" />
-        </CommandBar>
-    </Page.BottomAppBar>
 </Page>
