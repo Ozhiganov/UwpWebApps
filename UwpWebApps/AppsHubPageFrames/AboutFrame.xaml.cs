@@ -1,5 +1,6 @@
 ﻿using Microsoft.Services.Store.Engagement;
 using System;
+using System.Reflection;
 using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -29,12 +30,36 @@ namespace UwpWebApps.AppsHubPageFrames
             }
         }
 
+        public string AppPublisherStoreUrl
+        {
+            get
+            {
+                return $"ms-windows-store://publisher/?name={AppPublisher}";
+            }
+        }
+
         public string AppVersion
         {
             get
             {
                 var v = Package.Current.Id.Version;
                 return $"{v.Major}.{v.Minor}.{v.Build}";
+            }
+        }
+
+        public string Copyright
+        {
+            get
+            {
+                return CurrentAssembly.GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright;
+            }
+        }
+
+        private Assembly CurrentAssembly
+        {
+            get
+            {
+                return typeof(App).GetTypeInfo().Assembly;
             }
         }
 

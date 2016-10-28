@@ -19,12 +19,21 @@
     </Page.TopAppBar>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel DataContext="{Binding ElementName=aboutFrames}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" DataContext="{Binding ElementName=aboutFrames}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0">
             <TextBlock Text="{Binding Path=AppName}" Foreground="DodgerBlue" FontSize="30" Margin="0,0,0,10" />
             <TextBlock>
                 <TextBlock.Inlines>
                     <Run Text="Publisher: " />
-                    <Run Text="{Binding AppPublisher}" />
+                    <Hyperlink NavigateUri="{Binding AppPublisherStoreUrl}">
+                        <Hyperlink.Inlines>
+                            <Run Text="{Binding AppPublisher}" />
+                        </Hyperlink.Inlines>
+                    </Hyperlink>
                 </TextBlock.Inlines>
             </TextBlock>
 
@@ -34,6 +43,20 @@
                     <Run Text="{Binding AppVersion}" />
                 </TextBlock.Inlines>
             </TextBlock>
+
+            <TextBlock>
+                <TextBlock.Inlines>
+                    <Run Text="Web: " />
+                    <Hyperlink NavigateUri="http://talex-soft.com">www.talex-soft.com</Hyperlink>
+                </TextBlock.Inlines>
+            </TextBlock>
         </StackPanel>
+
+        <TextBlock Grid.Row="1" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="DarkGray" FontSize="12">
+            <TextBlock.Inlines>
+                <Run Text="{Binding Copyright, ElementName=aboutFrames}" />
+                <Run Text="All rights reserved." />
+            </TextBlock.Inlines>
+        </TextBlock>
     </Grid>
 </Page>

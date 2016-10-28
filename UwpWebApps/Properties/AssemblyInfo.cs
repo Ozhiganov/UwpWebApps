@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("UWP WebApps")]
-[assembly: AssemblyCopyright("Copyright © T-Alex Software 2016")]
+[assembly: AssemblyCopyright("Copyright © 2016 T-Alex Software")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
