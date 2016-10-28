@@ -98,13 +98,16 @@
     <Compile Include="AppsHubPage.xaml.cs">
       <DependentUpon>AppsHubPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppsHubPageFrames\AboutFrame.xaml.cs">
+    <Compile Include="Frames\AboutFrame.xaml.cs">
       <DependentUpon>AboutFrame.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppsHubPageFrames\AppsFrame.xaml.cs">
+    <Compile Include="Frames\AddEditAppFrame.xaml.cs">
+      <DependentUpon>AddEditAppFrame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Frames\AppsFrame.xaml.cs">
       <DependentUpon>AppsFrame.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppsHubPageFrames\CreditsFrame.xaml.cs">
+    <Compile Include="Frames\CreditsFrame.xaml.cs">
       <DependentUpon>CreditsFrame.xaml</DependentUpon>
     </Compile>
     <Compile Include="ConfigurationManager.cs" />
@@ -147,15 +150,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AppsHubPageFrames\AboutFrame.xaml">
+    <Page Include="Frames\AboutFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AppsHubPageFrames\AppsFrame.xaml">
+    <Page Include="Frames\AddEditAppFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AppsHubPageFrames\CreditsFrame.xaml">
+    <Page Include="Frames\AppsFrame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Frames\CreditsFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

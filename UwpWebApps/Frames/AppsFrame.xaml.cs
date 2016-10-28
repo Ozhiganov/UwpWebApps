@@ -19,7 +19,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace UwpWebApps.AppsHubPageFrames
+namespace UwpWebApps.Frames
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -44,7 +44,7 @@ namespace UwpWebApps.AppsHubPageFrames
 
         private void addAppButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Frame.Navigate(typeof(AddEditAppFrame), null);
         }
 
         private async void appsGridView_ItemClick(object sender, ItemClickEventArgs e)
@@ -73,6 +73,7 @@ namespace UwpWebApps.AppsHubPageFrames
         private void editAppMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
             var appModel = ((FrameworkElement)sender).DataContext as AppModel;
+            Frame.Navigate(typeof(AddEditAppFrame), appModel);
         }
 
         private async void removeAppMenuFlyoutItem_Click(object sender, RoutedEventArgs e)

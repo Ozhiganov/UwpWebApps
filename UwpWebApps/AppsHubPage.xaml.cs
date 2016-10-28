@@ -71,15 +71,15 @@ namespace UwpWebApps
             switch (selectedlistBoxItem.Id)
             {
                 case Constants.AppsHubFrames.Apps:
-                    navigationType = typeof(AppsHubPageFrames.AppsFrame);
+                    navigationType = typeof(Frames.AppsFrame);
                     break;
 
                 case Constants.AppsHubFrames.About:
-                    navigationType = typeof(AppsHubPageFrames.AboutFrame);
+                    navigationType = typeof(Frames.AboutFrame);
                     break;
 
                 case Constants.AppsHubFrames.Credits:
-                    navigationType = typeof(AppsHubPageFrames.CreditsFrame);
+                    navigationType = typeof(Frames.CreditsFrame);
                     break;
             }
 

@@ -41,11 +41,9 @@ namespace UwpWebApps
                     AccentColor = "#4889F0",
                     IconName = "google-translate.png",
                     DOMContentLoadedScript =
-@"
-    hideElementById('gbwa');
-    removeElementById('gt-ft-res');
-    removeElementById('gt-ft');
-"
+@"hideElementById('gbwa');
+removeElementById('gt-ft-res');
+removeElementById('gt-ft');"
                 },
 
                 new AppModel()
@@ -56,9 +54,7 @@ namespace UwpWebApps
                     AccentColor = "#FFA013",
                     IconName = "google-photos.png",
                     DOMContentLoadedScript =
-@"
-    hideElementById('gbwa');
-"
+@"hideElementById('gbwa');"
                 },
 
                 new AppModel()
