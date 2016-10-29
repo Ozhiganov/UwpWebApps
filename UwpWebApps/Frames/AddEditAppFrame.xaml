@@ -10,7 +10,7 @@
     <Page.TopAppBar>
         <CommandBar Background="Transparent" DefaultLabelPosition="Right" Margin="150,0,0,0">
             <AppBarButton Label="Save" Icon="Save" />
-            <AppBarButton Label="Cancel" Icon="Cancel" />
+            <AppBarButton Label="Cancel" Icon="Cancel" Click="cancelAppBarButton_Click" />
         </CommandBar>
     </Page.TopAppBar>
 
