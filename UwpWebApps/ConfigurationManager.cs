@@ -21,7 +21,7 @@ namespace UwpWebApps
                     Name = "YouTube",
                     BaseUrl = "https://youtube.com/",
                     AccentColor = "#CC181E",
-                    IconName = "youtube.png"
+                    IconPath = "ms-appx:///AppIcons/youtube.png"
                 },
 
                 new AppModel()
@@ -30,7 +30,7 @@ namespace UwpWebApps
                     Name = "Google Maps",
                     BaseUrl = "https://www.google.com.ua/maps",
                     AccentColor = "#1CA261",
-                    IconName = "google-maps.png"
+                    IconPath = "ms-appx:///AppIcons/google-maps.png"
                 },
 
                 new AppModel()
@@ -39,7 +39,7 @@ namespace UwpWebApps
                     Name = "Google Translate",
                     BaseUrl = "https://translate.google.com/",
                     AccentColor = "#4889F0",
-                    IconName = "google-translate.png",
+                    IconPath = "ms-appx:///AppIcons/google-translate.png",
                     DOMContentLoadedScript =
 @"hideElementById('gbwa');
 removeElementById('gt-ft-res');
@@ -52,7 +52,7 @@ removeElementById('gt-ft');"
                     Name = "Google Photos",
                     BaseUrl = "https://photos.google.com/",
                     AccentColor = "#FFA013",
-                    IconName = "google-photos.png",
+                    IconPath = "ms-appx:///AppIcons/google-photos.png",
                     DOMContentLoadedScript =
 @"hideElementById('gbwa');"
                 },
@@ -63,7 +63,7 @@ removeElementById('gt-ft');"
                     Name = "Google Play Books",
                     BaseUrl = "https://books.google.com/ebooks/app",
                     AccentColor = "#3FDBFE",
-                    IconName = "google-play-books.png"
+                    IconPath = "ms-appx:///AppIcons/google-play-books.png"
                 },
 
                 new AppModel()
@@ -72,7 +72,7 @@ removeElementById('gt-ft');"
                     Name = "Lingualeo",
                     BaseUrl = "https://lingualeo.com",
                     AccentColor = "#48B484",
-                    IconName = "lingualeo.png"
+                    IconPath = "ms-appx:///AppIcons/lingualeo.png"
                 },
             };
 
@@ -145,8 +145,10 @@ removeElementById('gt-ft');"
 
                 _apps.Add(app);
             }
-
-            existingApp.Copy(app);
+            else
+            {
+                existingApp.Copy(app);
+            }
         }
 
         #endregion

@@ -38,6 +38,17 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
 
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Icon (PNG, 256x256)" Margin="0,0,0,10" />
+                        <Button Content="Select..." Margin="0,0,0,20" Click="selectIconButton_Click" />
+                    </StackPanel>
+
+                    <Border VerticalAlignment="Top" Margin="20,0,0,0" MaxHeight="60" Background="{Binding SelectedValue, ElementName=accentColorComboBox}">
+                        <Image Name="iconImage" Source="{Binding IconPath}" />
+                    </Border>
+                </StackPanel>
+
                 <TextBox Header="DOM Content Loaded Script"
                      AcceptsReturn="True"
                      ScrollViewer.VerticalScrollBarVisibility="Visible"

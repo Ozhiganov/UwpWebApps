@@ -26,7 +26,7 @@
 
         public string AccentColor { get; set; }
 
-        public string IconName { get; set; }
+        public string IconPath { get; set; }
 
         public string DOMContentLoadedScript { get; set; }
 
@@ -36,8 +36,7 @@
 
         public AppModel()
         {
-            AccentColor = "Red";
-            IconName = "default.png";
+            AccentColor = "DodgerBlue";
         }
 
         #endregion
@@ -58,7 +57,7 @@
                 AccentColor = AccentColor,
                 BaseUrl = BaseUrl,
                 DOMContentLoadedScript = DOMContentLoadedScript,
-                IconName = IconName
+                IconPath = IconPath
             };
         }
 
@@ -68,7 +67,7 @@
             AccentColor = from.AccentColor;
             BaseUrl = from.BaseUrl;
             DOMContentLoadedScript = from.DOMContentLoadedScript;
-            IconName = from.IconName;
+            IconPath = from.IconPath;
         }
 
         #endregion

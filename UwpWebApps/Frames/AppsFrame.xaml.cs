@@ -50,12 +50,12 @@ namespace UwpWebApps.Frames
         private async void appsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var selectedApp = e.ClickedItem as AppModel;
-
+            
             var appTile = new SecondaryTile(
                 selectedApp.TileId,
                 selectedApp.Name,
                 selectedApp.Id,
-                new Uri($"ms-appx:///AppIcons/{selectedApp.IconName}"),
+                new Uri(selectedApp.IconPath),
                 TileSize.Default);
             appTile.VisualElements.BackgroundColor = (Windows.UI.Color)XamlBindingHelper.ConvertValue(typeof(Windows.UI.Color), selectedApp.AccentColor);
             appTile.VisualElements.ShowNameOnSquare150x150Logo = true;
