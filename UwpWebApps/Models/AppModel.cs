@@ -49,6 +49,28 @@
             return tileId.StartsWith(WebAppTilePrefix);
         }
 
+        public AppModel Clone()
+        {
+            return new AppModel
+            {
+                Id = Id,
+                Name = Name,
+                AccentColor = AccentColor,
+                BaseUrl = BaseUrl,
+                DOMContentLoadedScript = DOMContentLoadedScript,
+                IconName = IconName
+            };
+        }
+
+        public void Copy(AppModel from)
+        {
+            Name = from.Name;
+            AccentColor = from.AccentColor;
+            BaseUrl = from.BaseUrl;
+            DOMContentLoadedScript = from.DOMContentLoadedScript;
+            IconName = from.IconName;
+        }
+
         #endregion
     }
 }

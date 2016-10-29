@@ -5,11 +5,16 @@
     xmlns:local="using:UwpWebApps.Frames"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:convs="using:UwpWebApps.Converters"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <convs:ColorToFriendlyTextConverter x:Key="ColorToFriendlyTextConverter" />
+    </Page.Resources>
+    
     <Page.TopAppBar>
         <CommandBar Background="Transparent" DefaultLabelPosition="Right" Margin="150,0,0,0">
-            <AppBarButton Label="Save" Icon="Save" />
+            <AppBarButton Label="Save" Icon="Save" Click="saveAppBarButton_Click" />
             <AppBarButton Label="Cancel" Icon="Cancel" Click="cancelAppBarButton_Click" />
         </CommandBar>
     </Page.TopAppBar>
@@ -18,9 +23,20 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="20">
 
-                <TextBox Header="App Name" PlaceholderText="Web App" Text="{Binding Name}" IsSpellCheckEnabled="True" Margin="0,0,0,20" />
+                <TextBox Header="App Name" PlaceholderText="Web App" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsSpellCheckEnabled="True" Margin="0,0,0,20" />
 
-                <TextBox Header="Base Url" PlaceholderText="http://www.example.com" Text="{Binding BaseUrl}" IsSpellCheckEnabled="False" Margin="0,0,0,20" />
+                <TextBox Header="Base Url" PlaceholderText="http://www.example.com" Text="{Binding BaseUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsSpellCheckEnabled="False" Margin="0,0,0,20" />
+
+                <ComboBox Name="accentColorComboBox" Header="Accent Color" SelectedValue="{Binding AccentColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,20">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Border Background="{Binding}" BorderBrush="Silver" BorderThickness="1" Width="15" Height="15" Margin="0,0,5,0" />
+                                <TextBlock Text="{Binding Converter={StaticResource ColorToFriendlyTextConverter}}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
 
                 <TextBox Header="DOM Content Loaded Script"
                      AcceptsReturn="True"
@@ -28,7 +44,7 @@
                      IsSpellCheckEnabled="False"
                      Margin="0,0,0,20"
                      Height="200"
-                     Text="{Binding DOMContentLoadedScript}" />
+                     Text="{Binding DOMContentLoadedScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

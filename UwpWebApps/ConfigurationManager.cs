@@ -133,6 +133,22 @@ removeElementById('gt-ft');"
             _apps.Remove(targetApp);
         }
 
+        public void AddEditApp(AppModel app)
+        {
+            var existingApp = _apps.SingleOrDefault(x => x.Id == app.Id);
+            if (existingApp == null)
+            {
+                if (string.IsNullOrEmpty(app.Id))
+                {
+                    app.Id = Guid.NewGuid().ToString();
+                }
+
+                _apps.Add(app);
+            }
+
+            existingApp.Copy(app);
+        }
+
         #endregion
     }
 }
