@@ -10,9 +10,9 @@
     <Page.BottomAppBar>
         <AppBar ClosedDisplayMode="Hidden">
             <StackPanel Orientation="Horizontal">
-                <AppBarButton Icon="FullScreen" Label="Fullscreen (F11)" Click="fullscrenAppBarButton_Click" />
+                <AppBarButton Icon="FullScreen" Label="Fullscreen" Click="fullscrenAppBarButton_Click" />
                 <AppBarButton Icon="Home" Label="Home" Click="homeAppBarButton_Click" />
-                <AppBarButton Icon="Refresh" Label="Refresh (F5)" Click="refreshAppBarButton_Click" />
+                <AppBarButton Icon="Refresh" Label="Refresh" Click="refreshAppBarButton_Click" />
                 <AppBarButton Name="backButton" Icon="Back" Label="Go Back" IsEnabled="False" Click="backAppBarButton_Click" />
                 <AppBarButton Name="forwardButton" Icon="Forward" Label="Go Forward" IsEnabled="False" Click="forwardAppBarButton_Click" />
             </StackPanel>

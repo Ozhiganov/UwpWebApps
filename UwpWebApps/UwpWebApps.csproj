@@ -98,6 +98,7 @@
     <Compile Include="AppsHubPage.xaml.cs">
       <DependentUpon>AppsHubPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AppTilesManager.cs" />
     <Compile Include="Converters\ColorConverter.cs" />
     <Compile Include="Frames\AboutFrame.xaml.cs">
       <DependentUpon>AboutFrame.xaml</DependentUpon>

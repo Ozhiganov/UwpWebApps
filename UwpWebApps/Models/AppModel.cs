@@ -33,6 +33,7 @@ namespace UwpWebApps.Models
 
         [Required]
         [StringLength(30)]
+        [RegularExpression("[a-zA-Z0-9_@ ]+", ErrorMessage = "The field Name contains invalid characters.")]
         public string Name
         {
             get { return _name; }

@@ -50,17 +50,7 @@ namespace UwpWebApps.Frames
         private async void appsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var selectedApp = e.ClickedItem as AppModel;
-            
-            var appTile = new SecondaryTile(
-                selectedApp.TileId,
-                selectedApp.Name,
-                selectedApp.Id,
-                new Uri(selectedApp.IconPath),
-                TileSize.Default);
-            appTile.VisualElements.BackgroundColor = (Windows.UI.Color)XamlBindingHelper.ConvertValue(typeof(Windows.UI.Color), selectedApp.AccentColor);
-            appTile.VisualElements.ShowNameOnSquare150x150Logo = true;
-
-            await appTile.RequestCreateAsync();
+            await AppTilesManager.Current.RequestCreateTile(selectedApp);
         }
 
         private void appsGridViewItem_RightTapped(object sender, RightTappedRoutedEventArgs e)

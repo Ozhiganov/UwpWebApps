@@ -40,6 +40,8 @@ namespace UwpWebApps.Frames
 
         private static readonly string IconContentType = "image/png";
 
+        private Stream _iconStream;
+
         #endregion
 
         #region Properties
@@ -114,6 +116,7 @@ namespace UwpWebApps.Frames
 
             Model = new AppModel
             {
+                Id = Guid.NewGuid().ToString(),
                 IconPath = "ms-appx:///AppIcons/default.png"
             };
             if (e.Parameter is AppModel)
@@ -131,9 +134,26 @@ namespace UwpWebApps.Frames
             accentColorComboBox.ItemsSource = colors;
         }
 
-        private void saveAppBarButton_Click(object sender, RoutedEventArgs e)
+        private async void saveAppBarButton_Click(object sender, RoutedEventArgs e)
         {
+            if (_iconStream != null)
+            {
+                var appIconsFolderName = "app_icons";
+                var iconFileName = $"{Model.Id}.png";
+
+                var storageFolder = ApplicationData.Current.LocalFolder;
+                var appIconsFolder = await storageFolder.CreateFolderAsync(appIconsFolderName, CreationCollisionOption.OpenIfExists);
+                var iconFile = await appIconsFolder.CreateFileAsync(iconFileName, CreationCollisionOption.ReplaceExisting);
+
+                using (var stream = await iconFile.OpenStreamForWriteAsync())
+                {
+                    await _iconStream.CopyToAsync(stream);
+                }
+                Model.IconPath = $"ms-appdata:///local/{appIconsFolderName}/{iconFileName}";
+            }
+
             ConfigurationManager.Current.AddEditApp(Model);
+
             Frame.Navigate(typeof(AppsFrame));
         }
 
@@ -164,6 +184,11 @@ namespace UwpWebApps.Frames
                         var bitmapImage = new BitmapImage();
                         bitmapImage.SetSource(stream);
                         iconImage.Source = bitmapImage;
+
+                        stream.Seek(0);
+                        _iconStream = new MemoryStream();
+                        await stream.AsStream().CopyToAsync(_iconStream);
+                        _iconStream.Position = 0;
                     }
                 }
             }
