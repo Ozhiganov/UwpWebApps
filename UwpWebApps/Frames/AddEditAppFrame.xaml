@@ -14,7 +14,7 @@
     
     <Page.TopAppBar>
         <CommandBar Background="Transparent" DefaultLabelPosition="Right" Margin="150,0,0,0">
-            <AppBarButton Label="Save" Icon="Save" Click="saveAppBarButton_Click" />
+            <AppBarButton Label="Save" Icon="Save" IsEnabled="{Binding IsValid}" Click="saveAppBarButton_Click" />
             <AppBarButton Label="Cancel" Icon="Cancel" Click="cancelAppBarButton_Click" />
         </CommandBar>
     </Page.TopAppBar>
@@ -22,11 +22,20 @@
     <Grid Margin="0,-50,0,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="20">
+                <StackPanel.Resources>
+                    <Style x:Key="ValidationTextBlock" TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="Red" />
+                        <Setter Property="FontSize" Value="13" />
+                        <Setter Property="Margin" Value="0,0,0,10" />
+                    </Style>
+                </StackPanel.Resources>
 
-                <TextBox Header="App Name" PlaceholderText="Web App" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsSpellCheckEnabled="True" Margin="0,0,0,20" />
+                <TextBox Header="App Name" PlaceholderText="Web App" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsSpellCheckEnabled="True"  />
+                <TextBlock Text="{Binding Errors[Name][0]}" Style="{StaticResource ValidationTextBlock}" />
 
-                <TextBox Header="Base Url" PlaceholderText="http://www.example.com" Text="{Binding BaseUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsSpellCheckEnabled="False" Margin="0,0,0,20" />
-
+                <TextBox Header="Base Url" PlaceholderText="http://www.example.com" Text="{Binding BaseUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsSpellCheckEnabled="False" />
+                <TextBlock Text="{Binding Errors[BaseUrl][0]}" Style="{StaticResource ValidationTextBlock}" />
+                
                 <ComboBox Name="accentColorComboBox" Header="Accent Color" SelectedValue="{Binding AccentColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,20">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
@@ -44,7 +53,7 @@
                         <Button Content="Select..." Margin="0,0,0,20" Click="selectIconButton_Click" />
                     </StackPanel>
 
-                    <Border VerticalAlignment="Top" Margin="20,0,0,0" MaxHeight="60" Background="{Binding SelectedValue, ElementName=accentColorComboBox}">
+                    <Border VerticalAlignment="Top" Margin="20,0,0,0" MaxHeight="60" Background="{Binding AccentColor}">
                         <Image Name="iconImage" Source="{Binding IconPath}" />
                     </Border>
                 </StackPanel>
@@ -53,9 +62,9 @@
                      AcceptsReturn="True"
                      ScrollViewer.VerticalScrollBarVisibility="Visible"
                      IsSpellCheckEnabled="False"
-                     Margin="0,0,0,20"
                      Height="200"
                      Text="{Binding DOMContentLoadedScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Text="{Binding Errors[DOMContentLoadedScript][0]}" Style="{StaticResource ValidationTextBlock}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>
