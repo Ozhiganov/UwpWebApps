@@ -33,6 +33,14 @@ namespace UwpWebApps
 
         #endregion
 
+        #region Constructors
+
+        private AppTilesManager()
+        {
+        }
+
+        #endregion
+
         #region Methods
 
         #region Public

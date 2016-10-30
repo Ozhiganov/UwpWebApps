@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Threading.Tasks;
 using UwpWebApps.Models;
 using Windows.Storage;
 
@@ -75,13 +76,15 @@ removeElementById('gt-ft');"
             }
         };
 
-        ObservableCollection<AppModel> _apps;
+        private ObservableCollection<AppModel> _apps;
+        private AppTilesManager _appTilesManager;
+        private AppIconsManager _appIconsManager;
 
         #endregion
 
         #region Properties
 
-        public static ConfigurationManager Current
+public static ConfigurationManager Current
         {
             get
             {
@@ -99,7 +102,10 @@ removeElementById('gt-ft');"
 
         private ConfigurationManager()
         {
-            LoadApps();
+            _appTilesManager = AppTilesManager.Current;
+            _appIconsManager = AppIconsManager.Current;
+
+            LoadAppsFromSettings();
         }
 
         #endregion
@@ -132,13 +138,16 @@ removeElementById('gt-ft');"
             }
 
             _apps.Remove(targetApp);
-            SaveApps();
+            SaveAppsToSettings();
 
-            await AppTilesManager.Current.DeleteTile(targetApp.TileId);
+            await _appTilesManager.DeleteTile(targetApp.TileId);
+            await _appIconsManager.DeleteIcon(targetApp.IconPath);
         }
 
-        public async void AddEditApp(AppModel app)
+        public async Task AddEditApp(AppModel app, Stream iconFileStream = null)
         {
+            await _appIconsManager.UploadIcon(iconFileStream, app);
+
             var existingApp = _apps.SingleOrDefault(x => x.Id == app.Id);
             if (existingApp == null) // Create
             {
@@ -152,13 +161,13 @@ removeElementById('gt-ft');"
             else // Update
             {
                 existingApp.Copy(app);
-                await AppTilesManager.Current.UpdateTile(existingApp);
+                await _appTilesManager.UpdateTile(existingApp);
             }
 
-            SaveApps();
+            SaveAppsToSettings();
         }
 
-        protected void SaveApps()
+        protected void SaveAppsToSettings()
         {
             var serializer = new DataContractJsonSerializer(typeof(IEnumerable<AppModel>));
             var content = string.Empty;
@@ -173,7 +182,7 @@ removeElementById('gt-ft');"
             ApplicationData.Current.RoamingSettings.Values[SettingsKeys.WebApps] = content;
         }
 
-        protected void LoadApps()
+        protected void LoadAppsFromSettings()
         {
             var appsString = (string)ApplicationData.Current.RoamingSettings.Values[SettingsKeys.WebApps];
 
@@ -186,7 +195,7 @@ removeElementById('gt-ft');"
                 var serializer = new DataContractJsonSerializer(typeof(IEnumerable<AppModel>));
                 var content = string.Empty;
 
-                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(appsString ?? "")))
+                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(appsString ?? string.Empty)))
                 {
                     var apps = serializer.ReadObject(stream) as IEnumerable<AppModel>;
                     _apps = new ObservableCollection<AppModel>(apps);

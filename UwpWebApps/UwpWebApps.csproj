@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AppIconsManager.cs" />
     <Compile Include="AppsHubPage.xaml.cs">
       <DependentUpon>AppsHubPage.xaml</DependentUpon>
     </Compile>
