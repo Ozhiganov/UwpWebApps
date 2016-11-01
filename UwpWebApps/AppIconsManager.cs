@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TAlex.Common;
 using UwpWebApps.Models;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
@@ -26,8 +27,8 @@ namespace UwpWebApps
 
         private static readonly string IconContentType = "image/png";
 
-        private static readonly string AppIconsFolderName = "app_icons";
-        private static readonly string AppIconsFolderUri = $"ms-appdata:///local/{AppIconsFolderName}/";
+        public static readonly string AppIconsFolderName = "app_icons";
+        private static readonly string AppIconsFolderUri = $"ms-appdata:///roaming/{AppIconsFolderName}/";
 
         #endregion
 
@@ -63,9 +64,7 @@ namespace UwpWebApps
             if (iconFileStream != null)
             {
                 var iconFileName = $"{appModel.Id}{IconFileExtension}";
-
-                var storageFolder = ApplicationData.Current.LocalFolder;
-                var appIconsFolder = await storageFolder.CreateFolderAsync(AppIconsFolderName, CreationCollisionOption.OpenIfExists);
+                var appIconsFolder = await ApplicationData.Current.RoamingFolder.CreateFolderAsync(AppIconsFolderName, CreationCollisionOption.OpenIfExists);
                 var iconFile = await appIconsFolder.CreateFileAsync(iconFileName, CreationCollisionOption.ReplaceExisting);
 
                 using (var stream = await iconFile.OpenStreamForWriteAsync())
@@ -125,11 +124,12 @@ namespace UwpWebApps
             }
         }
 
-
-        private bool IsAppDataIconFile(string filePath)
+        public static bool IsAppDataIconFile(string filePath)
         {
             return filePath?.ToLowerInvariant().StartsWith(AppIconsFolderUri) ?? false;
         }
+
+
 
         #endregion
     }

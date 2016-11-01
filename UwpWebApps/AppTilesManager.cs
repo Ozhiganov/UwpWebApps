@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using TAlex.Common;
 using UwpWebApps.Models;
+using Windows.Storage;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml.Markup;
 
@@ -13,6 +14,8 @@ namespace UwpWebApps
         #region Fields
 
         private static AppTilesManager _instance;
+
+        private static readonly string AppIconsFolderUri = $"ms-appdata:///local/{AppIconsManager.AppIconsFolderName}/";
 
         #endregion
 
@@ -49,7 +52,7 @@ namespace UwpWebApps
         {
             Argument.RequiresNotNull(model, nameof(model));
 
-            var appTile = CreateTile(model);
+            var appTile = await CreateTile(model);
             return await appTile.RequestCreateAsync();
         }
 
@@ -59,7 +62,7 @@ namespace UwpWebApps
 
             if (SecondaryTile.Exists(model.TileId))
             {
-                var appTile = CreateTile(model);
+                var appTile = await CreateTile(model);
                 await appTile.UpdateAsync();
             }
 
@@ -82,13 +85,22 @@ namespace UwpWebApps
 
         #region Private
 
-        private SecondaryTile CreateTile(AppModel model)
+        private async Task<SecondaryTile> CreateTile(AppModel model)
         {
+            var iconPath = model.IconPath;
+            if (AppIconsManager.IsAppDataIconFile(model.IconPath))
+            {
+                var iconFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(model.IconPath));
+                var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(AppIconsManager.AppIconsFolderName, CreationCollisionOption.OpenIfExists);
+                var localIconFile = await iconFile.CopyAsync(folder, iconFile.Name, NameCollisionOption.ReplaceExisting);
+                iconPath = AppIconsFolderUri + localIconFile.Name;
+            }
+
             var appTile = new SecondaryTile(
                 model.TileId,
                 model.Name,
                 model.Id,
-                new Uri(model.IconPath),
+                new Uri(iconPath),
                 TileSize.Default);
             appTile.RoamingEnabled = true;
             appTile.VisualElements.BackgroundColor = (Windows.UI.Color)XamlBindingHelper.ConvertValue(typeof(Windows.UI.Color), model.AccentColor);
