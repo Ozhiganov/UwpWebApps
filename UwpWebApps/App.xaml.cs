@@ -119,7 +119,7 @@ namespace UwpWebApps
 
             if (testApp)
             {
-                frame.Navigate(typeof(MainPage), "660FD349-BF1A-4F2B-8909-C4C872AA72B7");
+                frame.Navigate(typeof(MainPage), "910607c7-fc99-47af-9ca3-37c470c6d6d9");
             }
             else if (Models.AppModel.IsAppTileId(tileId))
             {

@@ -1,25 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using UwpWebApps.Models;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace UwpWebApps
 {
@@ -73,6 +62,14 @@ namespace UwpWebApps
     function hideElementById(id) {
         var elem = document.getElementById(id);
         elem.style.visibility = 'hidden';
+    }
+
+    function forEachElement(selector, fn) {
+        var elements = document.querySelectorAll(selector);
+
+        for (var i = 0; i < elements.length; i++) {
+            fn(elements[i]);
+        }
     }
 
     #body
@@ -144,15 +141,22 @@ namespace UwpWebApps
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            ApplicationView.GetForCurrentView().Consolidated += ApplicationView_Consolidated;
+
             webView.RegisterPropertyChangedCallback(WebView.CanGoBackProperty, CanGoBack_PropertyChanged);
             webView.RegisterPropertyChangedCallback(WebView.CanGoForwardProperty, CanGoForward_PropertyChanged);
 
-            var navManager = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
+            var navManager = SystemNavigationManager.GetForCurrentView();
             navManager.BackRequested += NavManager_BackRequested;
 
             Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated += AcceleratorKeyActivated;
 
             NavigateToPage(_app.BaseUrl);
+        }
+
+        private void ApplicationView_Consolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs args)
+        {
+            webView.NavigateToString("about:blank");
         }
 
         private void AcceleratorKeyActivated(CoreDispatcher sender, AcceleratorKeyEventArgs args)
@@ -269,7 +273,11 @@ namespace UwpWebApps
 
         private void webView_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
         {
-            //args.
+            if (args.Uri.Host == new Uri(_app.BaseUrl).Host)
+            {
+                args.Handled = true;
+                webView.Navigate(args.Uri);
+            }    
         }
 
         private void webView_ContainsFullScreenElementChanged(WebView sender, object args)
