@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using TAlex.Common;
 using UwpWebApps.Models;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
@@ -79,12 +75,7 @@ namespace UwpWebApps
         {
             if (IsAppDataIconFile(iconPath))
             {
-                var storageFolder = ApplicationData.Current.LocalFolder;
-                var appIconsFolder = await storageFolder.GetFolderAsync(AppIconsFolderName);
-
-                var iconFileName = iconPath.Substring(AppIconsFolderUri.Length);
-                var iconFile = await appIconsFolder.GetFileAsync(iconFileName);
-
+                var iconFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(iconPath));
                 await iconFile?.DeleteAsync(StorageDeleteOption.PermanentDelete);
             }
         }
@@ -128,8 +119,6 @@ namespace UwpWebApps
         {
             return filePath?.ToLowerInvariant().StartsWith(AppIconsFolderUri) ?? false;
         }
-
-
 
         #endregion
     }
