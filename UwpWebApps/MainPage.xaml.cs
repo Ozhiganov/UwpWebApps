@@ -4,6 +4,7 @@ using UwpWebApps.Models;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Notifications;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -54,20 +55,34 @@ namespace UwpWebApps
             var scriptTemplate =
 @"
 (function() {
+
+    window.alert = function (AlertMessage) {
+        window.external.notify(AlertMessage);
+    }
+
     // common functions
     function removeElementById(id) {
         var elem = document.getElementById(id);
         elem.parentNode.removeChild(elem);
     }
 
-    function removeElementByClassName(className) {
+    function removeElementByClassName(className, alertIfNotExists) {
         var elem = document.querySelector('.' + className);
-        elem.parentNode.removeChild(elem);    
+        if (elem == null && alertIfNotExists) {
+            window.alert('Element with class ' + className + 'does not exists.');
+        }
+        if (elem) {
+            elem.parentNode.removeChild(elem);   
+        }
     }
 
     function hideElementById(id) {
         var elem = document.getElementById(id);
         elem.style.visibility = 'hidden';
+    }
+
+    function changeLinkUrl(selector, newUrl) {
+        document.querySelector(selector).href = newUrl;        
     }
 
     function forEachElement(selector, fn) {
@@ -219,11 +234,11 @@ namespace UwpWebApps
         {
             var canGoBack = (bool)sender.GetValue(dp);
 
-            var navManager = Windows.UI.Core.SystemNavigationManager.GetForCurrentView();
+            var navManager = SystemNavigationManager.GetForCurrentView();
 
             navManager.AppViewBackButtonVisibility = canGoBack ?
-                Windows.UI.Core.AppViewBackButtonVisibility.Visible :
-                Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
+                AppViewBackButtonVisibility.Visible :
+                AppViewBackButtonVisibility.Collapsed;
 
             backButton.IsEnabled = canGoBack;
         }
@@ -250,6 +265,11 @@ namespace UwpWebApps
 
         private async void webView_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
         {
+            if (args.Uri == null)
+            {
+                return;
+            }
+
             var script = _app.DOMContentLoadedScript;
             if (!string.IsNullOrWhiteSpace(script))
             {
@@ -259,10 +279,8 @@ namespace UwpWebApps
                 }
                 catch (Exception exc)
                 {
-                    //var toastContent = new Windows.UI.Notifications.ToastCon
-                    //new ToastContent()
-
-                    //ToastNotificationManager.CreateToastNotifier().Show(new ToastNotification(content.GetXml()));
+                    var dialog = new MessageDialog(exc.Message, "DOMContentLoaded Script Error");
+                    await dialog.ShowAsync();
                 }
             }
         }
@@ -309,8 +327,15 @@ namespace UwpWebApps
             }
         }
 
+        private async void webView_ScriptNotify(object sender, NotifyEventArgs e)
+        {
+            var dialog = new MessageDialog(e.Value, "Script Notify");
+            await dialog.ShowAsync();
+        }
+
         #endregion
 
         #endregion
+
     }
 }

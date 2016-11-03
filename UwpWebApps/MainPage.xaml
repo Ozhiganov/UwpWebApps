@@ -28,7 +28,8 @@
                  NavigationFailed="webView_NavigationFailed"
                  PermissionRequested="webView_PermissionRequested"
                  NewWindowRequested="webView_NewWindowRequested"
-                 ContainsFullScreenElementChanged="webView_ContainsFullScreenElementChanged">
+                 ContainsFullScreenElementChanged="webView_ContainsFullScreenElementChanged"
+                 ScriptNotify="webView_ScriptNotify">
         </WebView>
 
         <Border Name="contentOverlay" Background="White" />

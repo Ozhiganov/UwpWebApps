@@ -66,7 +66,8 @@ removeElementById('gt-ft');"
                 AccentColor = "#3FDBFE",
                 IconPath = "ms-appx:///AppIcons/google-play-books.png",
                 DOMContentLoadedScript =
-@"hideElementById('gbwa');"
+@"changeLinkUrl('#gbl', '/books');
+hideElementById('gbwa');"
             },
             new AppModel
             {
