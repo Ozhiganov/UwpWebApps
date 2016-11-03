@@ -27,7 +27,7 @@ namespace UwpWebApps.Frames
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            appsGrid.ItemsSource = ConfigurationManager.Current.GetApps();
+            appsGrid.ItemsSource = AppsManager.Current.GetApps();
         }
 
         private void addAppButton_Click(object sender, RoutedEventArgs e)
@@ -70,7 +70,7 @@ namespace UwpWebApps.Frames
 
         private void RemoveAppCommandHandler(string appId)
         {
-            ConfigurationManager.Current.RemoveApp(appId);
+            AppsManager.Current.RemoveApp(appId);
         }
 
         #endregion

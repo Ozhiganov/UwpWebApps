@@ -113,7 +113,7 @@
     <Compile Include="Frames\CreditsFrame.xaml.cs">
       <DependentUpon>CreditsFrame.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ConfigurationManager.cs" />
+    <Compile Include="AppsManager.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

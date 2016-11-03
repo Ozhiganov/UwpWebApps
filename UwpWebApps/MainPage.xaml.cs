@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using UwpWebApps.Models;
 using Windows.System;
 using Windows.UI.Core;
+using Windows.UI.Notifications;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -57,6 +58,11 @@ namespace UwpWebApps
     function removeElementById(id) {
         var elem = document.getElementById(id);
         elem.parentNode.removeChild(elem);
+    }
+
+    function removeElementByClassName(className) {
+        var elem = document.querySelector('.' + className);
+        elem.parentNode.removeChild(elem);    
     }
 
     function hideElementById(id) {
@@ -136,7 +142,7 @@ namespace UwpWebApps
         {
             base.OnNavigatedTo(e);
 
-            _app = ConfigurationManager.Current.GetApp((string)e.Parameter);
+            _app = AppsManager.Current.GetApp((string)e.Parameter);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -247,8 +253,17 @@ namespace UwpWebApps
             var script = _app.DOMContentLoadedScript;
             if (!string.IsNullOrWhiteSpace(script))
             {
-                try { await InvokeScript(script); }
-                catch (Exception) { }
+                try
+                {
+                    await InvokeScript(script);
+                }
+                catch (Exception exc)
+                {
+                    //var toastContent = new Windows.UI.Notifications.ToastCon
+                    //new ToastContent()
+
+                    //ToastNotificationManager.CreateToastNotifier().Show(new ToastNotification(content.GetXml()));
+                }
             }
         }
 

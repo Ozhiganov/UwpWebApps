@@ -63,7 +63,8 @@
                      ScrollViewer.VerticalScrollBarVisibility="Visible"
                      IsSpellCheckEnabled="False"
                      Height="200"
-                     Text="{Binding DOMContentLoadedScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding DOMContentLoadedScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     KeyDown="TextBox_KeyDown" />
                 <TextBlock Text="{Binding Errors[DOMContentLoadedScript][0]}" Style="{StaticResource ValidationTextBlock}" />
             </StackPanel>
         </ScrollViewer>

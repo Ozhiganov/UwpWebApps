@@ -12,11 +12,11 @@ using Windows.Storage;
 
 namespace UwpWebApps
 {
-    public class ConfigurationManager
+    public class AppsManager
     {
         #region Fields
 
-        private static ConfigurationManager _instance;
+        private static AppsManager _instance;
 
         private static readonly AppModel[] DefaultApps = new[]
         {
@@ -62,9 +62,11 @@ removeElementById('gt-ft');"
             {
                 Id = "DC743BD9-916B-460C-8093-781FA0F97206",
                 Name = "Google Play Books",
-                BaseUrl = "https://books.google.com/ebooks/app",
+                BaseUrl = "https://play.google.com/books",
                 AccentColor = "#3FDBFE",
-                IconPath = "ms-appx:///AppIcons/google-play-books.png"
+                IconPath = "ms-appx:///AppIcons/google-play-books.png",
+                DOMContentLoadedScript =
+@"hideElementById('gbwa');"
             },
             new AppModel
             {
@@ -84,13 +86,13 @@ removeElementById('gt-ft');"
 
         #region Properties
 
-public static ConfigurationManager Current
+        public static AppsManager Current
         {
             get
             {
                 if (_instance == null)
                 {
-                    _instance = new ConfigurationManager();
+                    _instance = new AppsManager();
                 }
                 return _instance;
             }
@@ -100,7 +102,7 @@ public static ConfigurationManager Current
 
         #region Constructors
 
-        private ConfigurationManager()
+        private AppsManager()
         {
             _appTilesManager = AppTilesManager.Current;
             _appIconsManager = AppIconsManager.Current;
