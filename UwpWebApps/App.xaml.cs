@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
+using Windows.UI.StartScreen;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+
 
 namespace UwpWebApps
 {
@@ -43,6 +46,8 @@ namespace UwpWebApps
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
+
+            await SetupJumpList();
 
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)                                      // First activation
@@ -117,11 +122,12 @@ namespace UwpWebApps
         {
             var testApp = false;
 
+            Guid appId;
             if (testApp)
             {
                 frame.Navigate(typeof(MainPage), "910607c7-fc99-47af-9ca3-37c470c6d6d9");
             }
-            else if (Models.AppModel.IsAppTileId(tileId))
+            else if (Guid.TryParse(args, out appId))
             {
                 frame.Navigate(typeof(MainPage), args);
             }
@@ -129,6 +135,23 @@ namespace UwpWebApps
             {
                 frame.Navigate(typeof(AppsHubPage), args);
             }
+        }
+
+
+        public static async Task SetupJumpList()
+        {
+            JumpList jumpList = await JumpList.LoadCurrentAsync();
+            jumpList.Items.Clear();
+
+            foreach (var app in AppsManager.Current.GetApps())
+            {
+                JumpListItem jumpBoxItem = JumpListItem.CreateWithArguments(app.Id, app.Name);
+                jumpBoxItem.Logo = new Uri(app.IconPath);
+                jumpBoxItem.GroupName = "Apps";
+                jumpList.Items.Add(jumpBoxItem);
+            }
+
+            await jumpList.SaveAsync();
         }
     }
 }
