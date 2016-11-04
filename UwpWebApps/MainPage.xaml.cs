@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using UwpWebApps.Models;
+using Windows.Storage;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Popups;
@@ -21,6 +22,8 @@ namespace UwpWebApps
         #region Fields
 
         private AppModel _app;
+
+        private static string DOMContentLoadedScriptTemplate;
 
         #endregion
 
@@ -51,132 +54,13 @@ namespace UwpWebApps
 
         private async Task<string> InvokeScript(string body)
         {
-            var scriptTemplate =
-@"
-(function() {
-    var DUBUG_MODE = false;
-
-    window.alert = function (AlertMessage) {
-        window.external.notify(AlertMessage);
-    }
-
-    // common functions
-    function forEach(list, fn) {
-        for (var i = 0; i < list.length; i++) {
-            fn(list[i]);
-        }
-    }
-
-    function getElements(selector) {
-        return document.querySelectorAll(selector);
-    }
-
-    function waitFor(selector, fn) {
-        // set up the mutation observer
-        var observer = new MutationObserver(function (mutations, me) {
-            // `mutations` is an array of mutations that occurred
-            // `me` is the MutationObserver instance
-            var element = document.querySelector(selector);
-
-            if (element) {
-                fn(element);
-                me.disconnect(); // stop observing
-                return;
+            if (string.IsNullOrEmpty(DOMContentLoadedScriptTemplate))
+            {
+                var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Resources/Scripts/DOMContentLoadedScriptTemplate.js"));
+                DOMContentLoadedScriptTemplate = await FileIO.ReadTextAsync(file);
             }
-        });
 
-        // start observing
-        observer.observe(document, {
-            childList: true,
-            subtree: true
-        });
-    }
-
-    function waitForAll(selector, fn) {
-        var elements = getElements(selector);
-        if (elements.length) {
-            forEach(elements, fn);
-            return;
-        }
-
-        // set up the mutation observer
-        var observer = new MutationObserver(function (mutations, me) {
-            // `mutations` is an array of mutations that occurred
-            // `me` is the MutationObserver instance
-            var elements = getElements(selector);
-
-            if (elements.length) {
-                forEach(elements, fn);
-                me.disconnect(); // stop observing
-                return;
-            }
-        });
-
-        // start observing
-        observer.observe(document, {
-            childList: true,
-            subtree: true
-        });
-    }
-
-    function removeElementById(id) {
-        var elem = document.getElementById(id);
-        elem.parentNode.removeChild(elem);
-    }
-
-    function removeElements(selector) {
-        waitForAll(selector, (elem) => {
-            elem.parentNode.removeChild(elem);
-        });
-    }
-
-    function removeElementByClassName(className) {
-        var elem = document.querySelector('.' + className);
-        if (elem == null && DUBUG_MODE) {
-            window.alert('Element with class ' + className + 'does not exists.');
-        }
-        if (elem) {
-            elem.parentNode.removeChild(elem);   
-        }
-    }
-
-    function hideElement(selector) {
-        waitFor(selector, (elem) => {
-            elem.style.visibility = 'hidden';
-        });
-    }
-
-    function changeLinkUrl(selector, newUrl) {
-        document.querySelector(selector).href = newUrl;        
-    }
-
-    //#body
-})();
-";
-
-            return await webView.InvokeScriptAsync("eval", new string[] { scriptTemplate.Replace("//#body", body) });
-        }
-
-        private async Task ChangeUserAgent(string userAgent)
-        {
-            var body =
-                @"
-                    function setUserAgent(window, userAgent) {
-                        if (window.navigator.userAgent != userAgent) {
-                            var userAgentProp = { get: function () { return userAgent; } };
-                            try {
-                                Object.defineProperty(window.navigator, 'userAgent', userAgentProp);
-                            } catch (e) {
-                                window.navigator = Object.create(navigator, {
-                                    userAgent: userAgentProp
-                                });
-                            }
-                        }
-                    }
-
-                    setUserAgent(window, '" + userAgent + @"');";
-
-            await InvokeScript(body);
+            return await webView.InvokeScriptAsync("eval", new string[] { DOMContentLoadedScriptTemplate.Replace("//#body", body) });
         }
 
         private void EnterExitFullscreenMode()
@@ -316,8 +200,6 @@ namespace UwpWebApps
 
         private void webView_ContentLoading(WebView sender, WebViewContentLoadingEventArgs args)
         {
-            //await ChangeUserAgent(userAgent);
-            //var kk = await InvokeScript("document.head.innerHTML");
         }
 
         private async void webView_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)

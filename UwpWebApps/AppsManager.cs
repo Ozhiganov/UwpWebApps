@@ -47,8 +47,8 @@ namespace UwpWebApps
                 IconPath = "ms-appx:///AppIcons/google-translate.png",
                 DOMContentLoadedScript =
 @"hideElement('#gbwa');
-removeElementById('gt-ft-res');
-removeElementById('gt-ft');"
+removeElement('#gt-ft-res');
+removeElement('#gt-ft');"
             },
             new AppModel
             {
@@ -70,9 +70,8 @@ removeElementById('gt-ft');"
                 DOMContentLoadedScript =
 @"changeLinkUrl('#gbl', '/books');
 hideElement('#gbwa');
-removeElementByClassName('show-all-hover-zone');
-removeElements('.nav-list-item.id-track-click.hidden-item');
-});"
+removeElement('.show-all-hover-zone');
+removeElements('.nav-list-item.id-track-click.hidden-item');"
             },
             new AppModel
             {
