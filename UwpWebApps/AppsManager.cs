@@ -34,7 +34,9 @@ namespace UwpWebApps
                 Name = "Google Maps",
                 BaseUrl = "https://www.google.com.ua/maps",
                 AccentColor = "#1CA261",
-                IconPath = "ms-appx:///AppIcons/google-maps.png"
+                IconPath = "ms-appx:///AppIcons/google-maps.png",
+                DOMContentLoadedScript =
+@"hideElement('#gbwa');"
             },
             new AppModel
             {
@@ -44,7 +46,7 @@ namespace UwpWebApps
                 AccentColor = "#4889F0",
                 IconPath = "ms-appx:///AppIcons/google-translate.png",
                 DOMContentLoadedScript =
-@"hideElementById('gbwa');
+@"hideElement('#gbwa');
 removeElementById('gt-ft-res');
 removeElementById('gt-ft');"
             },
@@ -56,7 +58,7 @@ removeElementById('gt-ft');"
                 AccentColor = "#FFA013",
                 IconPath = "ms-appx:///AppIcons/google-photos.png",
                 DOMContentLoadedScript =
-@"hideElementById('gbwa');"
+@"hideElement('#gbwa');"
             },
             new AppModel
             {
@@ -67,7 +69,10 @@ removeElementById('gt-ft');"
                 IconPath = "ms-appx:///AppIcons/google-play-books.png",
                 DOMContentLoadedScript =
 @"changeLinkUrl('#gbl', '/books');
-hideElementById('gbwa');"
+hideElement('#gbwa');
+removeElementByClassName('show-all-hover-zone');
+removeElements('.nav-list-item.id-track-click.hidden-item');
+});"
             },
             new AppModel
             {

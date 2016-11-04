@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using UwpWebApps.Models;
 using Windows.System;
 using Windows.UI.Core;
-using Windows.UI.Notifications;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -55,20 +54,85 @@ namespace UwpWebApps
             var scriptTemplate =
 @"
 (function() {
+    var DUBUG_MODE = false;
 
     window.alert = function (AlertMessage) {
         window.external.notify(AlertMessage);
     }
 
     // common functions
+    function forEach(list, fn) {
+        for (var i = 0; i < list.length; i++) {
+            fn(list[i]);
+        }
+    }
+
+    function getElements(selector) {
+        return document.querySelectorAll(selector);
+    }
+
+    function waitFor(selector, fn) {
+        // set up the mutation observer
+        var observer = new MutationObserver(function (mutations, me) {
+            // `mutations` is an array of mutations that occurred
+            // `me` is the MutationObserver instance
+            var element = document.querySelector(selector);
+
+            if (element) {
+                fn(element);
+                me.disconnect(); // stop observing
+                return;
+            }
+        });
+
+        // start observing
+        observer.observe(document, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    function waitForAll(selector, fn) {
+        var elements = getElements(selector);
+        if (elements.length) {
+            forEach(elements, fn);
+            return;
+        }
+
+        // set up the mutation observer
+        var observer = new MutationObserver(function (mutations, me) {
+            // `mutations` is an array of mutations that occurred
+            // `me` is the MutationObserver instance
+            var elements = getElements(selector);
+
+            if (elements.length) {
+                forEach(elements, fn);
+                me.disconnect(); // stop observing
+                return;
+            }
+        });
+
+        // start observing
+        observer.observe(document, {
+            childList: true,
+            subtree: true
+        });
+    }
+
     function removeElementById(id) {
         var elem = document.getElementById(id);
         elem.parentNode.removeChild(elem);
     }
 
-    function removeElementByClassName(className, alertIfNotExists) {
+    function removeElements(selector) {
+        waitForAll(selector, (elem) => {
+            elem.parentNode.removeChild(elem);
+        });
+    }
+
+    function removeElementByClassName(className) {
         var elem = document.querySelector('.' + className);
-        if (elem == null && alertIfNotExists) {
+        if (elem == null && DUBUG_MODE) {
             window.alert('Element with class ' + className + 'does not exists.');
         }
         if (elem) {
@@ -76,28 +140,21 @@ namespace UwpWebApps
         }
     }
 
-    function hideElementById(id) {
-        var elem = document.getElementById(id);
-        elem.style.visibility = 'hidden';
+    function hideElement(selector) {
+        waitFor(selector, (elem) => {
+            elem.style.visibility = 'hidden';
+        });
     }
 
     function changeLinkUrl(selector, newUrl) {
         document.querySelector(selector).href = newUrl;        
     }
 
-    function forEachElement(selector, fn) {
-        var elements = document.querySelectorAll(selector);
-
-        for (var i = 0; i < elements.length; i++) {
-            fn(elements[i]);
-        }
-    }
-
-    #body
+    //#body
 })();
 ";
 
-            return await webView.InvokeScriptAsync("eval", new string[] { scriptTemplate.Replace("#body", body) });
+            return await webView.InvokeScriptAsync("eval", new string[] { scriptTemplate.Replace("//#body", body) });
         }
 
         private async Task ChangeUserAgent(string userAgent)
