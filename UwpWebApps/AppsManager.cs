@@ -86,6 +86,7 @@ removeElements('.nav-list-item.id-track-click.hidden-item');"
         private ObservableCollection<AppModel> _apps;
         private AppTilesManager _appTilesManager;
         private AppIconsManager _appIconsManager;
+        private AppsJumpListManager _appsJumpListManager;
 
         #endregion
 
@@ -111,6 +112,7 @@ removeElements('.nav-list-item.id-track-click.hidden-item');"
         {
             _appTilesManager = AppTilesManager.Current;
             _appIconsManager = AppIconsManager.Current;
+            _appsJumpListManager = AppsJumpListManager.Current;
 
             LoadAppsFromSettings();
         }
@@ -149,6 +151,7 @@ removeElements('.nav-list-item.id-track-click.hidden-item');"
 
             await _appTilesManager.DeleteTile(targetApp.TileId);
             await _appIconsManager.DeleteIcon(targetApp.IconPath);
+            await _appsJumpListManager.UpdateList(GetApps());
         }
 
         public async Task AddEditApp(AppModel app, Stream iconFileStream = null)
@@ -172,6 +175,7 @@ removeElements('.nav-list-item.id-track-click.hidden-item');"
             }
 
             SaveAppsToSettings();
+            await _appsJumpListManager.UpdateList(GetApps());
         }
 
         protected void SaveAppsToSettings()

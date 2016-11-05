@@ -47,7 +47,7 @@ namespace UwpWebApps
             }
 #endif
 
-            await SetupJumpList();
+            await AppsJumpListManager.Current.UpdateList(AppsManager.Current.GetApps());
 
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)                                      // First activation
@@ -135,23 +135,6 @@ namespace UwpWebApps
             {
                 frame.Navigate(typeof(AppsHubPage), args);
             }
-        }
-
-
-        public static async Task SetupJumpList()
-        {
-            JumpList jumpList = await JumpList.LoadCurrentAsync();
-            jumpList.Items.Clear();
-
-            foreach (var app in AppsManager.Current.GetApps())
-            {
-                JumpListItem jumpBoxItem = JumpListItem.CreateWithArguments(app.Id, app.Name);
-                jumpBoxItem.Logo = new Uri(app.IconPath);
-                jumpBoxItem.GroupName = "Apps";
-                jumpList.Items.Add(jumpBoxItem);
-            }
-
-            await jumpList.SaveAsync();
         }
     }
 }
