@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UwpWebApps.AppsManagement;
 using UwpWebApps.Models;
 using Windows.Storage;
 using Windows.Storage.Pickers;

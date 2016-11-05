@@ -7,7 +7,7 @@ using Windows.UI.StartScreen;
 using Windows.UI.Xaml.Markup;
 
 
-namespace UwpWebApps
+namespace UwpWebApps.AppsManagement
 {
     public class AppTilesManager
     {

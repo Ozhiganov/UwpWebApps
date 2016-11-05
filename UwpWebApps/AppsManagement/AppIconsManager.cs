@@ -5,7 +5,7 @@ using UwpWebApps.Models;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace UwpWebApps
+namespace UwpWebApps.AppsManagement
 {
     public class AppIconsManager
     {

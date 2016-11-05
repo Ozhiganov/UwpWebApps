@@ -1,4 +1,5 @@
 ﻿using System;
+using UwpWebApps.AppsManagement;
 using UwpWebApps.Models;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;

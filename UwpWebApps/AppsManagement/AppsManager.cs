@@ -10,7 +10,7 @@ using UwpWebApps.Models;
 using Windows.Storage;
 
 
-namespace UwpWebApps
+namespace UwpWebApps.AppsManagement
 {
     public class AppsManager
     {
@@ -26,7 +26,7 @@ namespace UwpWebApps
                 Name = "YouTube",
                 BaseUrl = "https://youtube.com/",
                 AccentColor = "#CC181E",
-                IconPath = "ms-appx:///AppIcons/youtube.png"
+                IconPath = "ms-appx:///Resources/AppIcons/youtube.png"
             },
             new AppModel
             {
@@ -34,7 +34,7 @@ namespace UwpWebApps
                 Name = "Google Maps",
                 BaseUrl = "https://www.google.com.ua/maps",
                 AccentColor = "#1CA261",
-                IconPath = "ms-appx:///AppIcons/google-maps.png",
+                IconPath = "ms-appx:///Resources/AppIcons/google-maps.png",
                 DOMContentLoadedScript =
 @"hideElement('#gbwa');"
             },
@@ -44,7 +44,7 @@ namespace UwpWebApps
                 Name = "Google Translate",
                 BaseUrl = "https://translate.google.com/",
                 AccentColor = "#4889F0",
-                IconPath = "ms-appx:///AppIcons/google-translate.png",
+                IconPath = "ms-appx:///Resources/AppIcons/google-translate.png",
                 DOMContentLoadedScript =
 @"hideElement('#gbwa');
 removeElement('#gt-ft-res');
@@ -56,7 +56,7 @@ removeElement('#gt-ft');"
                 Name = "Google Photos",
                 BaseUrl = "https://photos.google.com/",
                 AccentColor = "#FFA013",
-                IconPath = "ms-appx:///AppIcons/google-photos.png",
+                IconPath = "ms-appx:///Resources/AppIcons/google-photos.png",
                 DOMContentLoadedScript =
 @"hideElement('#gbwa');"
             },
@@ -66,7 +66,7 @@ removeElement('#gt-ft');"
                 Name = "Google Play Books",
                 BaseUrl = "https://play.google.com/books",
                 AccentColor = "#3FDBFE",
-                IconPath = "ms-appx:///AppIcons/google-play-books.png",
+                IconPath = "ms-appx:///Resources/AppIcons/google-play-books.png",
                 DOMContentLoadedScript =
 @"changeLinkUrl('#gbl', '/books');
 hideElement('#gbwa');
@@ -79,7 +79,7 @@ removeElements('.nav-list-item.id-track-click.hidden-item');"
                 Name = "Lingualeo",
                 BaseUrl = "https://lingualeo.com",
                 AccentColor = "#48B484",
-                IconPath = "ms-appx:///AppIcons/lingualeo.png"
+                IconPath = "ms-appx:///Resources/AppIcons/lingualeo.png"
             }
         };
 

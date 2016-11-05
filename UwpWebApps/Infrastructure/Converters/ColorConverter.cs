@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TAlex.Common.Extensions;
 using Windows.UI.Xaml.Data;
 
 
-namespace UwpWebApps.Converters
+namespace UwpWebApps.Infrastructure.Converters
 {
     public class ColorToFriendlyTextConverter : IValueConverter
     {

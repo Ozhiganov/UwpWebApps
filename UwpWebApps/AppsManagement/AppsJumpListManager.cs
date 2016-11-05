@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UwpWebApps.Models;
 using Windows.UI.StartScreen;
 
-namespace UwpWebApps
+namespace UwpWebApps.AppsManagement
 {
     public class AppsJumpListManager
     {

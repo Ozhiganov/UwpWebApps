@@ -1,6 +1,6 @@
 ﻿using Prism.Validation;
 using System.ComponentModel.DataAnnotations;
-using UwpWebApps.Validation;
+using UwpWebApps.Infrastructure.Validation;
 
 
 namespace UwpWebApps.Models

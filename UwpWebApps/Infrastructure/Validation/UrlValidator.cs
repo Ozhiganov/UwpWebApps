@@ -2,7 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace UwpWebApps.Validation
+
+namespace UwpWebApps.Infrastructure.Validation
 {
     public class UrlValidatorAttribute : DataTypeAttribute
     {
