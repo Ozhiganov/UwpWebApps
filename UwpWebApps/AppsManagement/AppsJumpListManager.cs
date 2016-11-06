@@ -4,11 +4,14 @@ using System.Threading.Tasks;
 using UwpWebApps.Models;
 using Windows.UI.StartScreen;
 
+
 namespace UwpWebApps.AppsManagement
 {
     public class AppsJumpListManager
     {
         #region Fields
+
+        private static readonly string AppsGroupName = "Apps";
 
         private static AppsJumpListManager _instance;
 
@@ -48,9 +51,11 @@ namespace UwpWebApps.AppsManagement
 
             foreach (var app in apps)
             {
-                JumpListItem jumpBoxItem = JumpListItem.CreateWithArguments(app.Id, app.Name);
-                jumpBoxItem.Logo = new Uri(app.IconPath);
-                jumpBoxItem.GroupName = "Apps";
+                var jumpBoxItem = JumpListItem.CreateWithArguments(app.Id, app.Name);
+                var iconPath = await AppIconsManager.Current.CopyToLocalAppData(app.ListIconPath ?? app.TileIconPath);
+
+                jumpBoxItem.Logo = new Uri(iconPath);
+                jumpBoxItem.GroupName = AppsGroupName;
                 jumpList.Items.Add(jumpBoxItem);
             }
 

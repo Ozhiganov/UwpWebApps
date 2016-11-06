@@ -131,13 +131,20 @@
     <None Include="UwpWebApps_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\AppIcons\default.png" />
-    <Content Include="Resources\AppIcons\google-maps.png" />
-    <Content Include="Resources\AppIcons\google-photos.png" />
-    <Content Include="Resources\AppIcons\google-play-books.png" />
-    <Content Include="Resources\AppIcons\google-translate.png" />
-    <Content Include="Resources\AppIcons\lingualeo.png" />
-    <Content Include="Resources\AppIcons\youtube.png" />
+    <Content Include="Resources\AppIcons\default_list.png" />
+    <Content Include="Resources\AppIcons\default_tile.png" />
+    <Content Include="Resources\AppIcons\google-maps_list.png" />
+    <Content Include="Resources\AppIcons\google-maps_tile.png" />
+    <Content Include="Resources\AppIcons\google-photos_list.png" />
+    <Content Include="Resources\AppIcons\google-photos_tile.png" />
+    <Content Include="Resources\AppIcons\google-play-books_list.png" />
+    <Content Include="Resources\AppIcons\google-play-books_tile.png" />
+    <Content Include="Resources\AppIcons\google-translate_list.png" />
+    <Content Include="Resources\AppIcons\google-translate_tile.png" />
+    <Content Include="Resources\AppIcons\lingualeo_list.png" />
+    <Content Include="Resources\AppIcons\lingualeo_tile.png" />
+    <Content Include="Resources\AppIcons\youtube_list.png" />
+    <Content Include="Resources\AppIcons\youtube_tile.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-48_altform-unplated.png" />

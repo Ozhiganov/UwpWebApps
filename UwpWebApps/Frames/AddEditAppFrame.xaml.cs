@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UwpWebApps.AppsManagement;
 using UwpWebApps.Models;
 using Windows.Storage;
@@ -22,12 +20,6 @@ namespace UwpWebApps.Frames
     /// </summary>
     public sealed partial class AddEditAppFrame : Page
     {
-        #region Fields
-
-        private Stream _iconStream;
-
-        #endregion
-
         #region Properties
 
         private AppModel Model; 
@@ -54,7 +46,8 @@ namespace UwpWebApps.Frames
             Model = new AppModel
             {
                 Id = Guid.NewGuid().ToString(),
-                IconPath = AppIconsManager.DefaultIconPath
+                TileIconPath = AppIconsManager.DefaultTileIconPath,
+                ListIconPath = AppIconsManager.DefaultListIconPath
             };
             if (e.Parameter is AppModel)
             {
@@ -73,7 +66,7 @@ namespace UwpWebApps.Frames
 
         private async void saveAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            await AppsManager.Current.AddEditApp(Model, _iconStream);
+            await AppsManager.Current.AddEditApp(Model);
             Frame.Navigate(typeof(AppsFrame));
         }
 
@@ -90,21 +83,23 @@ namespace UwpWebApps.Frames
             openPicker.FileTypeFilter.Add(AppIconsManager.IconFileExtension);
 
             var file = await openPicker.PickSingleFileAsync();
+            if (file == null)
+            {
+                return;
+            }
 
             try
             {
-                await AppIconsManager.Current.ValidateImage(file);
+                var contentControl = (ContentControl)sender;
+                var iconType = (AppModel.IconType)Enum.Parse(typeof(AppModel.IconType), (string)contentControl.Tag);
+                await Model.SetIcon(file, iconType);
 
                 using (var stream = await file.OpenAsync(FileAccessMode.Read))
                 {
                     var bitmapImage = new BitmapImage();
                     bitmapImage.SetSource(stream);
-                    iconImage.Source = bitmapImage;
-
-                    stream.Seek(0);
-                    _iconStream = new MemoryStream();
-                    await stream.AsStream().CopyToAsync(_iconStream);
-                    _iconStream.Position = 0;
+                    var sourceImage = contentControl.Content as Image;
+                    sourceImage.Source = bitmapImage;
                 }
             }
             catch (Exception exc)

@@ -1,6 +1,12 @@
 ﻿using Prism.Validation;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Threading.Tasks;
 using UwpWebApps.Infrastructure.Validation;
+using Windows.Storage;
+using Windows.UI.Xaml.Media.Imaging;
 
 
 namespace UwpWebApps.Models
@@ -14,7 +20,8 @@ namespace UwpWebApps.Models
         private string _name;
         private string _baseUrl;
         private string _accentColor;
-        private string _iconPath;
+        private string _tileIconPath;
+        private string _listIconPath;
         private string _domContentLoadedScript;
 
         #endregion
@@ -33,7 +40,7 @@ namespace UwpWebApps.Models
 
         [Required]
         [StringLength(30)]
-        [RegularExpression("[a-zA-Z0-9_@ ]+", ErrorMessage = "The field Name contains invalid characters.")]
+        [RegularExpression("[a-zA-Z0-9_@ -]+", ErrorMessage = "The field Name contains invalid characters.")]
         public string Name
         {
             get { return _name; }
@@ -55,10 +62,30 @@ namespace UwpWebApps.Models
         }
 
         [Required]
-        public string IconPath
+        public string TileIconPath
         {
-            get { return _iconPath; }
-            set { SetProperty(ref _iconPath, value); }
+            get { return _tileIconPath; }
+            set { SetProperty(ref _tileIconPath, value); }
+        }
+
+        [IgnoreDataMember]
+        public Stream TileIconUploadStream
+        {
+            get;
+            private set;
+        }
+
+        public string ListIconPath
+        {
+            get { return _listIconPath; }
+            set { SetProperty(ref _listIconPath, value); }
+        }
+
+        [IgnoreDataMember]
+        public Stream ListIconUploadStream
+        {
+            get;
+            private set;
         }
 
         [StringLength(2000)]
@@ -106,7 +133,8 @@ namespace UwpWebApps.Models
                 AccentColor = AccentColor,
                 BaseUrl = BaseUrl,
                 DOMContentLoadedScript = DOMContentLoadedScript,
-                IconPath = IconPath
+                TileIconPath = TileIconPath,
+                ListIconPath = ListIconPath
             };
         }
 
@@ -116,12 +144,141 @@ namespace UwpWebApps.Models
             AccentColor = from.AccentColor;
             BaseUrl = from.BaseUrl;
             DOMContentLoadedScript = from.DOMContentLoadedScript;
-            IconPath = from.IconPath;
+            TileIconPath = from.TileIconPath;
+            ListIconPath = from.ListIconPath;
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        public async Task SetIcon(StorageFile iconFile, IconType iconType)
+        {
+            IconManager iconManager = null;
+            switch (iconType)
+            {
+                case IconType.Tile:
+                    iconManager = new TileIconManager();
+                    break;
+
+                case IconType.List:
+                    iconManager = new ListIconManager();
+                    break;
+
+                default:
+                    throw new InvalidOperationException();
+            }
+
+            await iconManager.SetImage(this, iconFile);
         }
 
         private void AppModel_ErrorsChanged(object sender, System.ComponentModel.DataErrorsChangedEventArgs e)
         {
             OnPropertyChanged(nameof(IsValid));
+        }
+
+        #endregion
+
+        #region Nested Types
+
+        public enum IconType
+        {
+            Tile,
+            List
+        }
+
+        private abstract class IconManager
+        {
+            public abstract int IconMinWidth { get; }
+            public abstract int IconMaxWidth { get; }
+            public abstract int IconMinHeight { get; }
+            public abstract int IconMaxHeight { get; }
+
+            public abstract string IconContentType { get; }
+
+
+            public async Task SetImage(AppModel model, StorageFile iconFile)
+            {
+                await Validate(iconFile);
+
+                using (var iconStream = await iconFile.OpenAsync(FileAccessMode.Read))
+                {
+                    var memoryStream = new MemoryStream();
+                    await iconStream.AsStream().CopyToAsync(memoryStream);
+                    memoryStream.Position = 0;
+
+                    UpdateImage(model, memoryStream);
+                }
+            }
+
+            public abstract void UpdateImage(AppModel model, Stream stream);
+
+
+            private async Task Validate(StorageFile file)
+            {
+                string errorMessage = null;
+
+                if (file.ContentType != IconContentType)
+                {
+                    errorMessage = "Selected file type does not support, please select PNG image.";
+                }
+                else
+                {
+                    using (var fileStream = await file.OpenAsync(FileAccessMode.Read))
+                    {
+                        var bitmapImage = new BitmapImage();
+                        bitmapImage.SetSource(fileStream);
+
+                        if (bitmapImage.PixelHeight == 0 || bitmapImage.PixelWidth == 0)
+                        {
+                            errorMessage = "Selected file is not an image.";
+                        }
+                        else if (bitmapImage.PixelWidth < IconMinWidth ||
+                                bitmapImage.PixelWidth > IconMaxWidth ||
+                                bitmapImage.PixelHeight < IconMinHeight ||
+                                bitmapImage.PixelHeight > IconMaxHeight)
+                        {
+                            errorMessage = $"Selected image is not in valid resolution (min. resolution: {IconMinWidth}x{IconMinHeight}, max. resolution: {IconMaxWidth}x{IconMaxHeight})";
+                        }
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    throw new Exception(errorMessage);
+                }
+            }
+        }
+
+        private class TileIconManager : IconManager
+        {
+            public override int IconMinWidth { get { return 128; } }
+            public override int IconMaxWidth { get { return 512; } }
+            public override int IconMinHeight { get { return 128; } }
+            public override int IconMaxHeight { get { return 512; } }
+
+            public override string IconContentType { get { return "image/png"; } }
+
+            public override void UpdateImage(AppModel model, Stream stream)
+            {
+                model.TileIconUploadStream = stream;
+            }
+        }
+
+        private class ListIconManager : IconManager
+        {
+            public override int IconMinWidth { get { return 32; } }
+            public override int IconMaxWidth { get { return 32; } }
+            public override int IconMinHeight { get { return 32; } }
+            public override int IconMaxHeight { get { return 32; } }
+
+            public override string IconContentType { get { return "image/png"; } }
+
+            public override void UpdateImage(AppModel model, Stream stream)
+            {
+                model.ListIconUploadStream = stream;
+            }
         }
 
         #endregion

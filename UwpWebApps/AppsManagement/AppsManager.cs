@@ -26,7 +26,8 @@ namespace UwpWebApps.AppsManagement
                 Name = "YouTube",
                 BaseUrl = "https://youtube.com/",
                 AccentColor = "#CC181E",
-                IconPath = "ms-appx:///Resources/AppIcons/youtube.png"
+                TileIconPath = "ms-appx:///Resources/AppIcons/youtube_tile.png",
+                ListIconPath = "ms-appx:///Resources/AppIcons/youtube_list.png"
             },
             new AppModel
             {
@@ -34,7 +35,8 @@ namespace UwpWebApps.AppsManagement
                 Name = "Google Maps",
                 BaseUrl = "https://www.google.com.ua/maps",
                 AccentColor = "#1CA261",
-                IconPath = "ms-appx:///Resources/AppIcons/google-maps.png",
+                TileIconPath = "ms-appx:///Resources/AppIcons/google-maps_tile.png",
+                ListIconPath = "ms-appx:///Resources/AppIcons/google-maps_list.png",
                 DOMContentLoadedScript =
 @"hideElement('#gbwa');"
             },
@@ -44,7 +46,8 @@ namespace UwpWebApps.AppsManagement
                 Name = "Google Translate",
                 BaseUrl = "https://translate.google.com/",
                 AccentColor = "#4889F0",
-                IconPath = "ms-appx:///Resources/AppIcons/google-translate.png",
+                TileIconPath = "ms-appx:///Resources/AppIcons/google-translate_tile.png",
+                ListIconPath = "ms-appx:///Resources/AppIcons/google-translate_list.png",
                 DOMContentLoadedScript =
 @"hideElement('#gbwa');
 removeElement('#gt-ft-res');
@@ -56,7 +59,8 @@ removeElement('#gt-ft');"
                 Name = "Google Photos",
                 BaseUrl = "https://photos.google.com/",
                 AccentColor = "#FFA013",
-                IconPath = "ms-appx:///Resources/AppIcons/google-photos.png",
+                TileIconPath = "ms-appx:///Resources/AppIcons/google-photos_tile.png",
+                ListIconPath = "ms-appx:///Resources/AppIcons/google-photos_list.png",
                 DOMContentLoadedScript =
 @"hideElement('#gbwa');"
             },
@@ -66,7 +70,8 @@ removeElement('#gt-ft');"
                 Name = "Google Play Books",
                 BaseUrl = "https://play.google.com/books",
                 AccentColor = "#3FDBFE",
-                IconPath = "ms-appx:///Resources/AppIcons/google-play-books.png",
+                TileIconPath = "ms-appx:///Resources/AppIcons/google-play-books_tile.png",
+                ListIconPath = "ms-appx:///Resources/AppIcons/google-play-books_list.png",
                 DOMContentLoadedScript =
 @"changeLinkUrl('#gbl', '/books');
 hideElement('#gbwa');
@@ -79,7 +84,8 @@ removeElements('.nav-list-item.id-track-click.hidden-item');"
                 Name = "Lingualeo",
                 BaseUrl = "https://lingualeo.com",
                 AccentColor = "#48B484",
-                IconPath = "ms-appx:///Resources/AppIcons/lingualeo.png"
+                TileIconPath = "ms-appx:///Resources/AppIcons/lingualeo_tile.png",
+                ListIconPath = "ms-appx:///Resources/AppIcons/lingualeo_list.png"
             }
         };
 
@@ -150,13 +156,14 @@ removeElements('.nav-list-item.id-track-click.hidden-item');"
             SaveAppsToSettings();
 
             await _appTilesManager.DeleteTile(targetApp.TileId);
-            await _appIconsManager.DeleteIcon(targetApp.IconPath);
+            await _appIconsManager.DeleteIcon(targetApp.TileIconPath);
+            await _appIconsManager.DeleteIcon(targetApp.ListIconPath);
             await _appsJumpListManager.UpdateList(GetApps());
         }
 
-        public async Task AddEditApp(AppModel app, Stream iconFileStream = null)
+        public async Task AddEditApp(AppModel app)
         {
-            await _appIconsManager.UploadIcon(iconFileStream, app);
+            await _appIconsManager.UploadIcons(app);
 
             var existingApp = _apps.SingleOrDefault(x => x.Id == app.Id);
             if (existingApp == null) // Create

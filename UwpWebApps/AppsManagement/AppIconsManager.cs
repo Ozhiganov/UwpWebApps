@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using UwpWebApps.Models;
 using Windows.Storage;
-using Windows.UI.Xaml.Media.Imaging;
+
 
 namespace UwpWebApps.AppsManagement
 {
@@ -11,20 +11,15 @@ namespace UwpWebApps.AppsManagement
     {
         #region Fields
 
-        public static readonly string DefaultIconPath = "ms-appx:///AppIcons/default.png";
-        public static readonly string IconFileExtension = ".png";
-
         private static AppIconsManager _instance;
 
-        private static readonly int IconMinWidth = 128;
-        private static readonly int IconMaxWidth = 512;
-        private static readonly int IconMinHeight = 128;
-        private static readonly int IconMaxHeight = 512;
-
-        private static readonly string IconContentType = "image/png";
+        public static readonly string DefaultTileIconPath = "ms-appx:///Resources/AppIcons/default_tile.png";
+        public static readonly string DefaultListIconPath = "ms-appx:///Resources/AppIcons/default_list.png";
+        public static readonly string IconFileExtension = ".png";
 
         public static readonly string AppIconsFolderName = "app_icons";
-        private static readonly string AppIconsFolderUri = $"ms-appdata:///roaming/{AppIconsFolderName}/";
+        private static readonly string AppIconsRoamingFolderUri = $"ms-appdata:///roaming/{AppIconsFolderName}/";
+        private static readonly string AppIconsLocalFolderUri = $"ms-appdata:///local/{AppIconsFolderName}/";
 
         #endregion
 
@@ -55,69 +50,58 @@ namespace UwpWebApps.AppsManagement
 
         #region Methods
 
-        public async Task UploadIcon(Stream iconFileStream, AppModel appModel)
+        public async Task UploadIcons(AppModel appModel)
         {
-            if (iconFileStream != null)
+            await UploadIcon(
+                appModel.TileIconUploadStream,
+                $"{appModel.Id}-tile{IconFileExtension}",
+                (iconPath) => appModel.TileIconPath = iconPath);
+
+            await UploadIcon(
+                appModel.ListIconUploadStream,
+                $"{appModel.Id}-list{IconFileExtension}",
+                (iconPath) => appModel.ListIconPath = iconPath);
+        }
+
+        private async Task UploadIcon(Stream iconStream, string iconFileName, Action<string> iconPathSetter)
+        {
+            if (iconStream != null)
             {
-                var iconFileName = $"{appModel.Id}{IconFileExtension}";
                 var appIconsFolder = await ApplicationData.Current.RoamingFolder.CreateFolderAsync(AppIconsFolderName, CreationCollisionOption.OpenIfExists);
                 var iconFile = await appIconsFolder.CreateFileAsync(iconFileName, CreationCollisionOption.ReplaceExisting);
 
                 using (var stream = await iconFile.OpenStreamForWriteAsync())
                 {
-                    await iconFileStream.CopyToAsync(stream);
+                    await iconStream.CopyToAsync(stream);
                 }
-                appModel.IconPath = $"{AppIconsFolderUri}{iconFileName}";
+                iconPathSetter($"{AppIconsRoamingFolderUri}{iconFileName}");
             }
         }
 
         public async Task DeleteIcon(string iconPath)
         {
-            if (IsAppDataIconFile(iconPath))
+            if (IsRoamingAppDataIconFile(iconPath))
             {
                 var iconFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(iconPath));
                 await iconFile?.DeleteAsync(StorageDeleteOption.PermanentDelete);
             }
         }
 
-        public async Task ValidateImage(StorageFile file)
+        public async Task<string> CopyToLocalAppData(string iconFilePath)
         {
-            string errorMessage = null;
-
-            if (file.ContentType != IconContentType)
+            if (IsRoamingAppDataIconFile(iconFilePath))
             {
-                errorMessage = "Selected file type does not support, please select PNG image.";
+                var roamingIconFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(iconFilePath));
+                var localFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(AppIconsFolderName, CreationCollisionOption.OpenIfExists);
+                var localIconFile = await roamingIconFile.CopyAsync(localFolder, roamingIconFile.Name, NameCollisionOption.ReplaceExisting);
+                return AppIconsLocalFolderUri + localIconFile.Name;
             }
-            else
-            {
-                using (var fileStream = await file.OpenAsync(FileAccessMode.Read))
-                {
-                    var bitmapImage = new BitmapImage();
-                    bitmapImage.SetSource(fileStream);
-
-                    if (bitmapImage.PixelHeight == 0 || bitmapImage.PixelWidth == 0)
-                    {
-                        errorMessage = "Selected file is not an image.";
-                    }
-                    else if (bitmapImage.PixelWidth < IconMinWidth ||
-                            bitmapImage.PixelWidth > IconMaxWidth ||
-                            bitmapImage.PixelHeight < IconMinHeight ||
-                            bitmapImage.PixelHeight > IconMaxHeight)
-                    {
-                        errorMessage = $"Selected image is not in valid resolution (min. resolution: {IconMinWidth}x{IconMinHeight}, max. resolution: {IconMaxWidth}x{IconMaxHeight})";
-                    }
-                }
-            }
-
-            if (!string.IsNullOrEmpty(errorMessage))
-            {
-                throw new Exception(errorMessage);
-            }
+            return iconFilePath;
         }
 
-        public static bool IsAppDataIconFile(string filePath)
+        private static bool IsRoamingAppDataIconFile(string filePath)
         {
-            return filePath?.ToLowerInvariant().StartsWith(AppIconsFolderUri) ?? false;
+            return filePath?.ToLowerInvariant().StartsWith(AppIconsRoamingFolderUri) ?? false;
         }
 
         #endregion

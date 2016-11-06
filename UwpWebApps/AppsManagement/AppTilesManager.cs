@@ -15,7 +15,7 @@ namespace UwpWebApps.AppsManagement
 
         private static AppTilesManager _instance;
 
-        private static readonly string AppIconsFolderUri = $"ms-appdata:///local/{AppIconsManager.AppIconsFolderName}/";
+
 
         #endregion
 
@@ -87,14 +87,7 @@ namespace UwpWebApps.AppsManagement
 
         private async Task<SecondaryTile> CreateTile(AppModel model)
         {
-            var iconPath = model.IconPath;
-            if (AppIconsManager.IsAppDataIconFile(model.IconPath))
-            {
-                var iconFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(model.IconPath));
-                var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(AppIconsManager.AppIconsFolderName, CreationCollisionOption.OpenIfExists);
-                var localIconFile = await iconFile.CopyAsync(folder, iconFile.Name, NameCollisionOption.ReplaceExisting);
-                iconPath = AppIconsFolderUri + localIconFile.Name;
-            }
+            var iconPath = await AppIconsManager.Current.CopyToLocalAppData(model.TileIconPath);
 
             var appTile = new SecondaryTile(
                 model.TileId,

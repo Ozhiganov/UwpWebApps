@@ -47,15 +47,20 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
 
-                <StackPanel Orientation="Horizontal">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Icon (PNG, 256x256)" Margin="0,0,0,10" />
-                        <Button Content="Select..." Margin="0,0,0,20" Click="selectIconButton_Click" />
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <StackPanel Orientation="Vertical" Margin="0,0,20,0">
+                        <TextBlock Text="Tile Icon (PNG, 256x256)" Margin="0,0,0,10" />
+                        <Button Margin="0,0,0,0" Padding="0" Background="{Binding AccentColor}" Tag="Tile" Click="selectIconButton_Click">
+                            <Image Source="{Binding TileIconPath}" Width="60" Height="60" MaxHeight="60" />
+                        </Button>
                     </StackPanel>
 
-                    <Border VerticalAlignment="Top" Margin="20,0,0,0" MaxHeight="60" Background="{Binding AccentColor}">
-                        <Image Name="iconImage" Source="{Binding IconPath}" />
-                    </Border>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="List Icon (PNG, 44x44)" Margin="0,0,0,10" />
+                        <Button Margin="0,0,0,0" Padding="0" Background="White" BorderBrush="WhiteSmoke" Tag="List" Click="selectIconButton_Click">
+                            <Image Source="{Binding ListIconPath}" Width="16" Height="16" MaxHeight="16" />
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
 
                 <TextBox Header="DOM Content Loaded Script"
