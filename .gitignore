@@ -31,6 +31,8 @@ obj/
 [Rr]elease*/
 Ankh.NoLoad
 project.lock.json
+AppPackages
+BundleArtifacts
 
 #MonoDevelop
 *.pidb
