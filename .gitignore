@@ -31,6 +31,7 @@ obj/
 [Rr]elease*/
 Ankh.NoLoad
 project.lock.json
+_pkginfo.txt
 AppPackages
 BundleArtifacts
 
@@ -61,3 +62,4 @@ packages/
 
 # visual studio database projects
 *.dbmdl
+
