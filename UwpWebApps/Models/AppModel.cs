@@ -1,4 +1,4 @@
-﻿using Prism.Validation;
+﻿using Prism.Windows.Validation;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
