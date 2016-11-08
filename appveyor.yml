@@ -1,0 +1,26 @@
+version: 1.0.{build}
+configuration: Release
+platform: x64
+environment:
+  UseTemporarySignCert: true
+install:
+- ps: >-
+    Write-Host "Installing MicrosoftStoreServicesSDK..." -ForegroundColor Cyan
+
+    Write-Host "Downloading..."
+
+    $msiPath = "$env:USERPROFILE\MicrosoftStoreServicesSDK.msi"
+
+    (New-Object Net.WebClient).DownloadFile('https://visualstudiogallery.msdn.microsoft.com/229b7858-2c6a-4073-886e-cbb79e851211/file/206533/4/MicrosoftStoreServicesSDK.msi', $msiPath)
+
+    Write-Host "Installing..."
+
+    cmd /c start /wait msiexec /i $msiPath /quiet
+
+    Write-Host "MicrosoftStoreServicesSDK installed" -ForegroundColor Green
+before_build:
+- ps: nuget restore
+build:
+  verbosity: minimal
+artifacts:
+- path: UwpWebApps\AppPackages\UwpWebApps_*\UwpWebApps_*.appxbundle
