@@ -21,7 +21,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="60" />
         </Grid.RowDefinitions>
         
         <StackPanel Grid.Row="0" DataContext="{Binding ElementName=aboutFrames}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0">
@@ -52,11 +52,16 @@
             </TextBlock>
         </StackPanel>
 
-        <TextBlock Grid.Row="1" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="DarkGray" FontSize="12">
-            <TextBlock.Inlines>
-                <Run Text="{Binding Copyright, ElementName=aboutFrames}" />
-                <Run Text="All rights reserved." />
-            </TextBlock.Inlines>
-        </TextBlock>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Foreground="DarkGray" FontSize="12">
+                <TextBlock.Inlines>
+                    <Run Text="{Binding Copyright, ElementName=aboutFrames}" />
+                    <Run Text="All rights reserved." />
+                </TextBlock.Inlines>
+            </TextBlock>
+
+            <HyperlinkButton NavigateUri="http://talex-soft.com/privacy_statement" FontSize="12" HorizontalAlignment="Center">Privacy Stetement</HyperlinkButton>
+        </StackPanel>
+        
     </Grid>
 </Page>
