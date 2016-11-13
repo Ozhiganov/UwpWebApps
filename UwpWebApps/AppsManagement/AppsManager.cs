@@ -89,6 +89,8 @@ removeElements('.nav-list-item.id-track-click.hidden-item');"
             }
         };
 
+        private static readonly string WebAppsListFilename = "WebAppsList.json";
+
         private ObservableCollection<AppModel> _apps;
         private AppTilesManager _appTilesManager;
         private AppIconsManager _appIconsManager;
@@ -105,6 +107,7 @@ removeElements('.nav-list-item.id-track-click.hidden-item');"
                 if (_instance == null)
                 {
                     _instance = new AppsManager();
+                    _instance.LoadAppsFromFile().Wait();
                 }
                 return _instance;
             }
@@ -119,8 +122,6 @@ removeElements('.nav-list-item.id-track-click.hidden-item');"
             _appTilesManager = AppTilesManager.Current;
             _appIconsManager = AppIconsManager.Current;
             _appsJumpListManager = AppsJumpListManager.Current;
-
-            LoadAppsFromSettings();
         }
 
         #endregion
@@ -153,7 +154,7 @@ removeElements('.nav-list-item.id-track-click.hidden-item');"
             }
 
             _apps.Remove(targetApp);
-            SaveAppsToSettings();
+            await SaveAppsToFile();
 
             await _appTilesManager.DeleteTile(targetApp.TileId);
             await _appIconsManager.DeleteIcon(targetApp.TileIconPath);
@@ -181,11 +182,11 @@ removeElements('.nav-list-item.id-track-click.hidden-item');"
                 await _appTilesManager.UpdateTile(existingApp);
             }
 
-            SaveAppsToSettings();
+            await SaveAppsToFile();
             await _appsJumpListManager.UpdateList(GetApps());
         }
 
-        protected void SaveAppsToSettings()
+        protected async Task SaveAppsToFile()
         {
             var serializer = new DataContractJsonSerializer(typeof(IEnumerable<AppModel>));
             var content = string.Empty;
@@ -197,14 +198,15 @@ removeElements('.nav-list-item.id-track-click.hidden-item');"
                 content = new StreamReader(stream).ReadToEnd();
             }
 
-            ApplicationData.Current.RoamingSettings.Values[SettingsKeys.WebApps] = content;
+            var webAppsFile = await ApplicationData.Current.RoamingFolder.CreateFileAsync(WebAppsListFilename, CreationCollisionOption.ReplaceExisting);
+            await FileIO.WriteTextAsync(webAppsFile, content);
         }
 
-        protected void LoadAppsFromSettings()
+        protected async Task LoadAppsFromFile()
         {
-            var appsString = (string)ApplicationData.Current.RoamingSettings.Values[SettingsKeys.WebApps];
-
-            if (string.IsNullOrEmpty(appsString))
+            var appsListFile = await ApplicationData.Current.RoamingFolder.TryGetItemAsync(WebAppsListFilename);
+            
+            if (appsListFile == null)
             {
                 _apps = new ObservableCollection<AppModel>(DefaultApps);
             }
@@ -213,21 +215,13 @@ removeElements('.nav-list-item.id-track-click.hidden-item');"
                 var serializer = new DataContractJsonSerializer(typeof(IEnumerable<AppModel>));
                 var content = string.Empty;
 
+                var appsString = await FileIO.ReadTextAsync((IStorageFile)appsListFile);
                 using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(appsString ?? string.Empty)))
                 {
                     var apps = serializer.ReadObject(stream) as IEnumerable<AppModel>;
                     _apps = new ObservableCollection<AppModel>(apps);
                 }
             }
-        }
-
-        #endregion
-
-        #region Nested Types
-
-        private static class SettingsKeys
-        {
-            public static readonly string WebApps = "WebApps";
         }
 
         #endregion
