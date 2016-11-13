@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using UwpWebApps.AppsManagement;
 using UwpWebApps.Models;
@@ -61,7 +62,16 @@ namespace UwpWebApps
                 DOMContentLoadedScriptTemplate = await FileIO.ReadTextAsync(file);
             }
 
-            return await webView.InvokeScriptAsync("eval", new string[] { DOMContentLoadedScriptTemplate.Replace("//#body", body) });
+            try
+            {
+                return await webView.InvokeScriptAsync("eval", new string[] { DOMContentLoadedScriptTemplate.Replace("//#body", body) });
+            }
+            catch (Exception exc)
+            {
+                var dialog = new MessageDialog(exc.Message, "Invoke Script Error");
+                await dialog.ShowAsync();
+                return null;
+            }
         }
 
         private void EnterExitFullscreenMode()
@@ -199,29 +209,21 @@ namespace UwpWebApps
             progressRing.IsActive = true;
         }
 
-        private void webView_ContentLoading(WebView sender, WebViewContentLoadingEventArgs args)
+        private async void webView_ContentLoading(WebView sender, WebViewContentLoadingEventArgs args)
         {
+            var script = _app.ContentLoadingScript;
+            if (args.Uri != null && !string.IsNullOrWhiteSpace(script))
+            {
+                await InvokeScript(script);
+            }
         }
 
         private async void webView_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
         {
-            if (args.Uri == null)
-            {
-                return;
-            }
-
             var script = _app.DOMContentLoadedScript;
-            if (!string.IsNullOrWhiteSpace(script))
+            if (args.Uri != null && !string.IsNullOrWhiteSpace(script))
             {
-                try
-                {
-                    await InvokeScript(script);
-                }
-                catch (Exception exc)
-                {
-                    var dialog = new MessageDialog(exc.Message, "DOMContentLoaded Script Error");
-                    await dialog.ShowAsync();
-                }
+                await InvokeScript(script);
             }
         }
 
@@ -267,10 +269,9 @@ namespace UwpWebApps
             }
         }
 
-        private async void webView_ScriptNotify(object sender, NotifyEventArgs e)
+        private void webView_ScriptNotify(object sender, NotifyEventArgs e)
         {
-            var dialog = new MessageDialog(e.Value, "Script Notify");
-            await dialog.ShowAsync();
+            Debug.WriteLine($"SCRIPT_NOTIFY: {e.Value}");
         }
 
         #endregion

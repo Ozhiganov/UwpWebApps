@@ -22,6 +22,7 @@ namespace UwpWebApps.Models
         private string _accentColor;
         private string _tileIconPath;
         private string _listIconPath;
+        private string _contentLoadingScript;
         private string _domContentLoadedScript;
 
         #endregion
@@ -89,6 +90,13 @@ namespace UwpWebApps.Models
         }
 
         [StringLength(2000)]
+        public string ContentLoadingScript
+        {
+            get { return _contentLoadingScript; }
+            set { SetProperty(ref _contentLoadingScript, value); }
+        }
+
+        [StringLength(2000)]
         public string DOMContentLoadedScript
         {
             get { return _domContentLoadedScript; }
@@ -132,6 +140,7 @@ namespace UwpWebApps.Models
                 Name = Name,
                 AccentColor = AccentColor,
                 BaseUrl = BaseUrl,
+                ContentLoadingScript = ContentLoadingScript,
                 DOMContentLoadedScript = DOMContentLoadedScript,
                 TileIconPath = TileIconPath,
                 ListIconPath = ListIconPath
@@ -143,6 +152,7 @@ namespace UwpWebApps.Models
             Name = from.Name;
             AccentColor = from.AccentColor;
             BaseUrl = from.BaseUrl;
+            ContentLoadingScript = from.ContentLoadingScript;
             DOMContentLoadedScript = from.DOMContentLoadedScript;
             TileIconPath = from.TileIconPath;
             ListIconPath = from.ListIconPath;

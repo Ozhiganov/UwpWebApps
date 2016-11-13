@@ -63,11 +63,20 @@
                     </StackPanel>
                 </StackPanel>
 
+                <TextBox Header="Content Loading Script"
+                     AcceptsReturn="True"
+                     ScrollViewer.VerticalScrollBarVisibility="Visible"
+                     IsSpellCheckEnabled="False"
+                     Height="300"
+                     Text="{Binding ContentLoadingScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     KeyDown="TextBox_KeyDown" />
+                <TextBlock Text="{Binding Errors[ContentLoadingScript][0]}" Style="{StaticResource ValidationTextBlock}" />
+
                 <TextBox Header="DOM Content Loaded Script"
                      AcceptsReturn="True"
                      ScrollViewer.VerticalScrollBarVisibility="Visible"
                      IsSpellCheckEnabled="False"
-                     Height="200"
+                     Height="300"
                      Text="{Binding DOMContentLoadedScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      KeyDown="TextBox_KeyDown" />
                 <TextBlock Text="{Binding Errors[DOMContentLoadedScript][0]}" Style="{StaticResource ValidationTextBlock}" />

@@ -1,8 +1,12 @@
 ﻿(function () {
     var DUBUG_MODE = false;
 
-    window.alert = function (AlertMessage) {
-        window.external.notify(AlertMessage);
+    console.log = function (message) {
+        return window.external.notify("console.log: " + message);
+    };
+
+    window.alert = function (message) {
+        window.external.notify("window.alert: " + message);
     }
 
     // common functions
