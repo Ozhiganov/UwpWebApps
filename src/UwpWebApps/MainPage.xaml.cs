@@ -214,7 +214,80 @@ namespace UwpWebApps
             var script = _app.ContentLoadingScript;
             if (args.Uri != null && !string.IsNullOrWhiteSpace(script))
             {
-                await InvokeScript(script);
+                await InvokeScript(
+@"
+
+setUserAgent(window, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36');
+
+MediaSource.isTypeSupported = function(type) {
+    console.log('call MediaSource.isTypeSupported(' + type + ')');
+    return true;
+}
+
+//-------------------------
+var origAppendBuffer = SourceBuffer.prototype.appendBuffer;
+var newAppendBuffer = function () {
+    console.log('call appendBuffer ' + this.updating);
+    this.addEventListener('updateend', function () {
+        console.log('fire updateend ' + JSON.stringify(arguments));
+    });    
+
+    this.updating = true;
+
+    var updateStartEvent = new CustomEvent('updatstart', { 'isTrusted' : true });
+    this.dispatchEvent(updateStartEvent);
+
+    this.updating = false;
+
+    var updateEvent = new CustomEvent('update', { 'isTrusted' : true });
+    this.dispatchEvent(updateEvent);
+
+    var updateEndEvent = new CustomEvent('updateend', { 'isTrusted' : true });
+    this.dispatchEvent(updateEndEvent);
+}
+SourceBuffer.prototype.appendBuffer = newAppendBuffer;
+
+// -----------------------------
+var origAddSourceBuffer = MediaSource.prototype.addSourceBuffer;
+var newAddSourceBuffer = function () {
+    arguments[0] = 'audio/mp4';
+    return origAddSourceBuffer.apply(this, arguments);
+}
+MediaSource.prototype.addSourceBuffer = newAddSourceBuffer;
+
+//-------------------------------
+
+window.musicElement = document.createElement('audio');
+
+//---------------------------
+
+var origFetch = window.fetch;
+
+var newFetch = function () {
+    var url = arguments[0];
+
+    if (window.musicElement.src != url) {
+        console.log('call fetch: ' + url);
+        window.musicElement.src = url;
+        window.musicElement.play();
+    }
+    return origFetch.apply(this, arguments);
+};
+window.fetch = newFetch;
+
+
+//------------------------
+var origOpen = XMLHttpRequest.prototype.open;
+
+var newOpen = function () {
+    var url = arguments[1];
+    //console.log('XHR: ' + url);
+    origOpen.apply(this, arguments);
+};
+XMLHttpRequest.prototype.open = newOpen;
+
+"
+                    );
             }
         }
 
@@ -277,6 +350,5 @@ namespace UwpWebApps
         #endregion
 
         #endregion
-
     }
 }

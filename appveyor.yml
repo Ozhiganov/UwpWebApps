@@ -23,4 +23,4 @@ before_build:
 build:
   verbosity: minimal
 artifacts:
-- path: UwpWebApps\AppPackages\UwpWebApps_*\UwpWebApps_*.appxbundle
+- path: src\UwpWebApps\AppPackages\UwpWebApps_*\UwpWebApps_*.appxbundle
