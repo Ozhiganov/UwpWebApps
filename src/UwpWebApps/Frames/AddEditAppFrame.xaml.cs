@@ -51,7 +51,12 @@ namespace UwpWebApps.Frames
             };
             if (e.Parameter is AppModel)
             {
+                TopAppBar.Content = "Edit App";
                 Model = ((AppModel)e.Parameter).Clone();
+            }
+            else
+            {
+                TopAppBar.Content = "Add App";
             }
 
             DataContext = Model;

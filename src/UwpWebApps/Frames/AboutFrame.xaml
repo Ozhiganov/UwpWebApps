@@ -9,12 +9,14 @@
     mc:Ignorable="d">
 
     <Page.TopAppBar>
-        <CommandBar Background="Transparent" Margin="150,0,0,0" DefaultLabelPosition="Right">
-            <AppBarButton Name="feedbackButton" Label="Feedback" Click="feedbackAppButton_Click">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xE939;" />
-                </AppBarButton.Icon>
-            </AppBarButton>
+        <CommandBar Style="{StaticResource TopAppBarStyle}" Content="About">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Name="feedbackButton" Label="Feedback" Click="feedbackAppButton_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE939;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBar.PrimaryCommands>
         </CommandBar>
     </Page.TopAppBar>
 
@@ -62,6 +64,5 @@
 
             <HyperlinkButton NavigateUri="http://talex-soft.com/privacy_statement" FontSize="12" HorizontalAlignment="Center">Privacy Stetement</HyperlinkButton>
         </StackPanel>
-        
     </Grid>
 </Page>

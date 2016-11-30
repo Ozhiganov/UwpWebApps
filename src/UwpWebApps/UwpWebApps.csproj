@@ -111,6 +111,7 @@
     </Compile>
     <Compile Include="AppsManagement\AppsJumpListManager.cs" />
     <Compile Include="AppsManagement\AppTilesManager.cs" />
+    <Compile Include="Infrastructure\Converters\CaseConverter.cs" />
     <Compile Include="Infrastructure\Converters\ColorConverter.cs" />
     <Compile Include="Frames\AboutFrame.xaml.cs">
       <DependentUpon>AboutFrame.xaml</DependentUpon>
@@ -194,6 +195,11 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
   </ItemGroup>
   <ItemGroup>

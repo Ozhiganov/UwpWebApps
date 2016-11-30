@@ -8,12 +8,12 @@
     mc:Ignorable="d" Loaded="Page_Loaded">
 
     <Page.TopAppBar>
-        <CommandBar Background="Transparent" Margin="150,0,0,0" DefaultLabelPosition="Right">
+        <CommandBar Content="Apps" Style="{StaticResource TopAppBarStyle}">
             <AppBarButton Icon="Add" Label="Add App" Click="addAppButton_Click" />
         </CommandBar>
     </Page.TopAppBar>
 
-    <GridView Margin="20,0,20,20" Name="appsGrid" ItemClick="appsGridView_ItemClick" IsItemClickEnabled="True">
+    <GridView Margin="20" Name="appsGrid" ItemClick="appsGridView_ItemClick" IsItemClickEnabled="True">
         <GridView.ItemsPanel>
             <ItemsPanelTemplate>
                 <ItemsWrapGrid Orientation="Horizontal"/>

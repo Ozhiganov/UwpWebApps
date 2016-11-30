@@ -93,16 +93,7 @@
 
         <SplitView.Content>
             <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <Border Grid.Row="0" Background="#F9F9F9">
-                    <TextBlock Margin="20,0,0,0" FontSize="18" FontWeight="Bold" Foreground="Black" VerticalAlignment="Center" Typography.Capitals="AllSmallCaps" Text="{Binding Path=SelectedItem.Title, ElementName=menuItemsListBox}" />
-                </Border>
-
-                <Frame Grid.Row="1" Name="contentFrame">
+                <Frame Name="contentFrame">
                     <Frame.ContentTransitions>
                         <TransitionCollection>
                             <NavigationThemeTransition>
