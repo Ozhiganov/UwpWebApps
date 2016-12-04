@@ -105,11 +105,11 @@ namespace UwpWebApps
 
         #region Event Handlers
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            _app = AppsManager.Current.GetApp((string)e.Parameter);
+            _app = (await AppsManager.GetCurrent()).GetApp((string)e.Parameter);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

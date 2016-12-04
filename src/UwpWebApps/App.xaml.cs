@@ -48,7 +48,7 @@ namespace UwpWebApps
             }
 #endif
 
-            await AppsJumpListManager.Current.UpdateList(AppsManager.Current.GetApps());
+            await AppsJumpListManager.Current.UpdateList((await AppsManager.GetCurrent()).GetApps());
 
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)                                      // First activation

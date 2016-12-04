@@ -16,8 +16,6 @@ namespace UwpWebApps.AppsManagement
     {
         #region Fields
 
-        private static object LockObj = new object();
-
         private static AppsManager _instance;
 
         private static readonly AppModel[] DefaultApps = new[]
@@ -102,25 +100,15 @@ removeElements('.nav-list-item.id-track-click.hidden-item');"
 
         #region Properties
 
-        public static AppsManager Current
+        public async static Task<AppsManager> GetCurrent()
         {
-            get
+            if (_instance == null)
             {
-                if (_instance == null)
-                {
-                    lock (LockObj)
-                    {
-                        if (_instance == null)
-                        {
-                            _instance = new AppsManager();
-                            var task = _instance.LoadAppsFromFile();
-                            task.Wait();
-                        }
-                    }
-                }
-                
-                return _instance;
+                _instance = new AppsManager();
+                await _instance.LoadAppsFromFile();
             }
+                
+            return _instance;
         }
 
         #endregion

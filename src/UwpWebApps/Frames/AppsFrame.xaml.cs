@@ -26,9 +26,9 @@ namespace UwpWebApps.Frames
 
         #region Event Handlers
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            appsGrid.ItemsSource = AppsManager.Current.GetApps();
+            appsGrid.ItemsSource = (await AppsManager.GetCurrent()).GetApps();
         }
 
         private void addAppButton_Click(object sender, RoutedEventArgs e)
@@ -69,9 +69,9 @@ namespace UwpWebApps.Frames
             await dialog.ShowAsync();
         }
 
-        private void RemoveAppCommandHandler(string appId)
+        private async void RemoveAppCommandHandler(string appId)
         {
-            AppsManager.Current.RemoveApp(appId);
+            (await AppsManager.GetCurrent()).RemoveApp(appId);
         }
 
         #endregion

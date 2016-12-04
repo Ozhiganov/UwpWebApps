@@ -71,7 +71,7 @@ namespace UwpWebApps.Frames
 
         private async void saveAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            await AppsManager.Current.AddEditApp(Model);
+            await (await AppsManager.GetCurrent()).AddEditApp(Model);
             Frame.Navigate(typeof(AppsFrame));
         }
 
